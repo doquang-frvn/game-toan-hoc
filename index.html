@@ -340,9 +340,26 @@ function sHome(){
       <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="#fff" stroke="${COL.ink}" stroke-width="4"/><line x1="8" y1="32" x2="56" y2="32" stroke="${COL.berry}" stroke-width="4"/><circle cx="32" cy="32" r="4" fill="${COL.ink}"/></svg>
       <div><h3>Hình Tròn</h3><p>Tâm, bán kính, đường kính, trung điểm</p></div>
     </button>
-    <div class="tile lock"><span class="tag">Sắp mở</span>
-      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 24 L32 14 L50 24 L50 46 L32 56 L14 46Z M14 24 L32 34 L50 24 M32 34 V56" fill="#eef2f5" stroke="#9aa9b6" stroke-width="3" stroke-linejoin="round"/></svg>
-      <div><h3>Khối Hộp</h3><p>Hình lập phương, hình hộp chữ nhật</p></div></div>
+    <button class="tile ${isDone(WORLDS.box.key)?'done':''}" id="w3">
+      <span class="tag">${isDone(WORLDS.box.key)?'Đã xong ★':'Mở rồi'}</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 24 L32 14 L50 24 L50 46 L32 56 L14 46Z" fill="#ffd97f" stroke="${COL.ink}" stroke-width="3" stroke-linejoin="round"/><path d="M14 24 L32 34 L50 24 M32 34 V56" fill="none" stroke="${COL.ink}" stroke-width="3" stroke-linejoin="round"/></svg>
+      <div><h3>Khối Hộp</h3><p>Trải hộp đếm mặt, co kéo thành lập phương</p></div>
+    </button>
+    <button class="tile ${isDone(WORLDS.expr.key)?'done':''}" id="w4">
+      <span class="tag">${isDone(WORLDS.expr.key)?'Đã xong ★':'Mở rồi'}</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="24" width="22" height="16" rx="5" fill="#fff" stroke="${COL.ink}" stroke-width="3"/><rect x="36" y="32" width="22" height="16" rx="5" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="3"/><path d="M26 18 Q38 6 50 22" fill="none" stroke="${COL.berry}" stroke-width="3" stroke-linecap="round"/><path d="M50 22 l-8 -1 m8 1 l-1 -8" stroke="${COL.berry}" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      <div><h3>Tính Nhanh</h3><p>Số nhảy chỗ, đóng ngoặc, đổi dấu</p></div>
+    </button>
+    <button class="tile ${isDone(WORLDS.gap.key)?'done':''}" id="w5">
+      <span class="tag">${isDone(WORLDS.gap.key)?'Đã xong ★':'Mở rồi'}</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="14" cy="46" r="5" fill="#e8475f" stroke="#1d2b3a" stroke-width="2"/><circle cx="26" cy="46" r="5" fill="#e8475f" stroke="#1d2b3a" stroke-width="2"/><circle cx="38" cy="46" r="5" fill="#e8475f" stroke="#1d2b3a" stroke-width="2"/><circle cx="50" cy="46" r="5" fill="#e8475f" stroke="#1d2b3a" stroke-width="2"/><circle cx="14" cy="32" r="5" fill="#2f7fd8" stroke="#1d2b3a" stroke-width="2"/><circle cx="26" cy="32" r="5" fill="#2f7fd8" stroke="#1d2b3a" stroke-width="2"/><circle cx="38" cy="32" r="5" fill="#2f7fd8" stroke="#1d2b3a" stroke-width="2"/><circle cx="50" cy="32" r="5" fill="#2f7fd8" stroke="#1d2b3a" stroke-width="2"/><circle cx="14" cy="18" r="5" fill="#4f9a45" stroke="#1d2b3a" stroke-width="2"/><circle cx="26" cy="18" r="5" fill="#4f9a45" stroke="#1d2b3a" stroke-width="2"/><circle cx="38" cy="18" r="5" fill="#4f9a45" stroke="#1d2b3a" stroke-width="2"/><circle cx="50" cy="18" r="5" fill="#4f9a45" stroke="#1d2b3a" stroke-width="2"/></svg>
+      <div><h3>Gấp – Phép Nhân</h3><p>Gấp thếp lên để hiểu phép nhân</p></div>
+    </button>
+    <button class="tile ${isDone(WORLDS.chia.key)?'done':''}" id="w6">
+      <span class="tag">${isDone(WORLDS.chia.key)?'Đã xong ★':'Mở rồi'}</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="47" rx="22" ry="9" fill="#fff" stroke="${COL.ink}" stroke-width="3"/><circle cx="24" cy="41" r="5" fill="${COL.berry}" stroke="${COL.ink}" stroke-width="2"/><circle cx="38" cy="41" r="5" fill="${COL.wide}" stroke="${COL.ink}" stroke-width="2"/><circle cx="31" cy="16" r="5" fill="${COL.leaf}" stroke="${COL.ink}" stroke-width="2"/><path d="M31 23 V32" stroke="${COL.soft}" stroke-width="2.5" stroke-dasharray="3 3"/></svg>
+      <div><h3>Chia Kẹo</h3><p>Chia hết và chia có dư</p></div>
+    </button>
     <div class="tile lock"><span class="tag">Sắp mở</span>
       <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="16" width="40" height="10" rx="3" fill="#9aa9b6"/><rect x="8" y="36" width="24" height="10" rx="3" fill="#c3ced8"/></svg>
       <div><h3>Thời Gian</h3><p>Bài toán tuổi</p></div></div>
@@ -353,6 +370,10 @@ function sHome(){
   </div>`;
   $('#w1').onclick=()=>go('fence');
   $('#w2').onclick=()=>go('circle');
+  $('#w3').onclick=()=>go('box');
+  $('#w4').onclick=()=>go('expr');
+  $('#w5').onclick=()=>go('gap');
+  $('#w6').onclick=()=>go('chia');
   $('#nb').onclick=()=>go('note');
   cap.innerHTML='Mỗi thế giới là một hộp đồ chơi. Con kéo, bấm, cho xe chạy để <b class="key">tự nhìn ra</b> ý nghĩa của từ toán học, rồi viết thành <b>công thức</b>.';
   lastSay='Chọn một thế giới để chơi nhé.';
@@ -370,6 +391,24 @@ const NOTES={
     ['Đường kính','<span class="L">bán kính</span> × 2','3 × 2 = 6 cm','Đường kính bằng bán kính nhân 2.'],
     ['Bán kính','<span class="key">đường kính</span> : 2','6 : 2 = 3 cm','Bán kính bằng đường kính chia 2.'],
     ['Trung điểm M của đoạn AB','AM = MB = AB : 2','8 : 2 = 4 cm','Trung điểm M nằm giữa A và B, và A M bằng M B, bằng A B chia 2.']
+  ],
+  box:[
+    ['Hình hộp chữ nhật','6 mặt chữ nhật','8 đỉnh · 12 cạnh','Hình hộp chữ nhật có 6 mặt là hình chữ nhật, 8 đỉnh và 12 cạnh.'],
+    ['Hình lập phương','6 mặt vuông bằng nhau','8 đỉnh · 12 cạnh bằng nhau','Hình lập phương có 6 mặt là hình vuông bằng nhau, 8 đỉnh, và 12 cạnh dài bằng nhau.'],
+    ['Lập phương là hộp đặc biệt','dài = rộng = cao','co kéo cho 3 số bằng nhau','Hình lập phương là hình hộp chữ nhật đặc biệt có chiều dài, chiều rộng, chiều cao bằng nhau.']
+  ],
+  expr:[
+    ['Nhảy chỗ để tính nhanh','số nhảy đi đâu, dấu theo đó','435−360+565−140 = 435+565−360−140','Khi đổi chỗ các số trong dãy cộng trừ, mỗi số mang theo dấu đứng trước nó.'],
+    ['Đóng ngoặc sau dấu cộng','a + b + c = a + (b + c)','vào cổng cộng: giữ nguyên dấu','Đóng ngoặc sau dấu cộng thì các dấu bên trong ngoặc giữ nguyên.'],
+    ['Đóng ngoặc sau dấu trừ','a − b − c = a − (b + c)','vào cổng trừ: đổi dấu bên trong','Đóng ngoặc sau dấu trừ thì phải đổi dấu các số bên trong ngoặc: trừ thành cộng, cộng thành trừ.']
+  ],
+  gap:[
+    ['Gấp lên nhiều lần','gấp 3 lần = × 3','4 gấp 3 lần: 4 × 3 = 4+4+4 = 12','Gấp một số lên 3 lần, ta lấy số đó nhân với 3.'],
+    ['Gấp khác nhiều hơn','nhiều hơn 3 → +3 · gấp 3 lần → ×3','4+3 = 7 · 4×3 = 12','Nhiều hơn mấy thì cộng mấy. Gấp mấy lần thì nhân mấy.']
+  ],
+  chia:[
+    ['Chia hết','12 : 3 = 4','chia đều, không thừa viên nào','Mười hai chia ba bằng bốn. Chia đều cho ba bạn, không thừa viên nào, gọi là chia hết.'],
+    ['Chia có dư','14 : 3 = 4 (dư 2)','số dư luôn bé hơn số chia','Mười bốn chia ba bằng bốn, dư hai. Số dư luôn bé hơn số chia, vì nếu còn đủ thì chia tiếp được.']
   ]
 };
 function noteCards(list,open){
@@ -378,7 +417,8 @@ function noteCards(list,open){
 function bindNotes(){stage.querySelectorAll('.nbcard').forEach(b=>b.onclick=()=>{if(b.dataset.say){click();popEl(b);say(b.dataset.say);}});}
 function sNotebook(){
   start();
-  stage.innerHTML=`<div class="nb"><div class="nbhead">Hàng Rào</div>${noteCards(NOTES.fence,isDone(WORLDS.fence.key))}<div class="nbhead">Hình Tròn</div>${noteCards(NOTES.circle,isDone(WORLDS.circle.key))}</div>`;
+  const SEC=[['fence','Hàng Rào'],['circle','Hình Tròn'],['box','Khối Hộp'],['expr','Tính Nhanh'],['gap','Gấp – Phép Nhân'],['chia','Chia Kẹo']];
+  stage.innerHTML=`<div class="nb">${SEC.map(([k,name])=>`<div class="nbhead">${name}</div>${noteCards(NOTES[k],isDone(WORLDS[k].key))}`).join('')}</div>`;
   bindNotes();
   talk('Đây là sổ công thức của con. Chạm vào từng bảng để nghe đọc lại. Công thức nào còn dấu hỏi thì con chơi xong thế giới đó là mở được.');
   buttons([{label:'← Về bản đồ',kind:'go',on:()=>go(null)}]);
@@ -1080,6 +1120,620 @@ function cDone(){
   buttons([{label:'Chơi lại',on:()=>go('circle')},{label:'Mở Sổ công thức',kind:'go',on:()=>go('note')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
 }
 WORLDS.circle.screens=[cCompass,cDiameter,cDecode,cFold,cPlay,cMidpoint,cQuiz,cDone];
+
+/* ================================================================
+   THẾ GIỚI TÍNH NHANH — số nhảy chỗ, cổng dấu
+   ================================================================ */
+WORLDS.expr={title:'Thế Giới Tính Nhanh',sub:'Số nhảy chỗ, đóng ngoặc, đổi dấu',key:'tinhnhanh-xong',screens:[]};
+WORLDS.box={title:'Thế Giới Khối Hộp',sub:'Hình hộp chữ nhật, hình lập phương',key:'khoihop-xong',screens:[]};
+WORLDS.gap={title:'Thế Giới Gấp',sub:'Phép nhân là gấp lên nhiều lần',key:'gap-xong',screens:[]};
+WORLDS.chia={title:'Thế Giới Chia Kẹo',sub:'Chia hết và chia có dư',key:'chia-xong',screens:[]};
+
+/* thẻ số mang theo dấu của nó */
+function mkChip(svg,sign,num,x,y){
+  const g=el('g',{},svg);
+  const w=38+String(num).length*17;
+  el('rect',{x:-w/2,y:-26,width:w,height:52,rx:14,fill:'#fff',stroke:COL.ink,'stroke-width':3},g);
+  const sg=el('g',{},g);
+  const st=txt(sg,0,10,sign,{'font-size':32,fill:sign==='−'?COL.berry:COL.leaf});
+  txt(g,0,9,String(num),{'font-size':26});
+  const o={g,x,y,w,sign,st,sg,
+    sx(){return -o.w/2-18;},
+    set(nx,ny){o.x=nx;o.y=ny;g.setAttribute('transform',`translate(${nx} ${ny})`);sg.setAttribute('transform',`translate(${o.sx()} 0)`);},
+    fly(nx,ny,ms=900,half){const x0=o.x,y0=o.y;let did=false;
+      return tween(ms,(e,p)=>{const xx=lerp(x0,nx,e),yy=lerp(y0,ny,e)-66*Math.sin(Math.PI*e);
+        g.setAttribute('transform',`translate(${xx} ${yy})`);
+        if(half&&p>=.5&&!did){did=true;half();}}).then(()=>{o.x=nx;o.y=ny;});},
+    flip(ns){o.sign=ns;tone(880,.12,'square',.08);
+      return tween(340,(e,p)=>{const k=Math.max(.03,Math.abs(1-2*p));
+        if(p>=.5){st.textContent=ns;st.setAttribute('fill',ns==='−'?COL.berry:COL.leaf);}
+        sg.setAttribute('transform',`translate(${o.sx()} 0) scale(${k} 1)`);});}
+  };
+  o.set(x,y);return o;
+}
+const EXS=[90,230,370,500];
+function exprChips(svg,y=60){
+  return [mkChip(svg,'',435,EXS[0],y),mkChip(svg,'−',360,EXS[1],y),mkChip(svg,'+',565,EXS[2],y),mkChip(svg,'−',140,EXS[3],y)];
+}
+
+function xSlow(){
+  const alive=start();
+  const svg=newSvg(120);exprChips(svg);
+  const bd=board();
+  talk('Cô giáo ra bài: tính <b>435 − 360 + 565 − 140</b>. Thử tính <b>lần lượt từ trái sang phải</b> xem có mệt không nhé!',
+       'Cô giáo ra bài: tính 435 trừ 360 cộng 565 trừ 140. Thử tính lần lượt từ trái sang phải xem có mệt không nhé!');
+  buttons([{label:'Tính từng bước',kind:'go',on:async()=>{
+    lockButtons(true);
+    bd.add('435 − 360 = 75 <small>(phải mượn, khó!)</small>');await wait(1800);if(!alive())return;
+    bd.add('75 + 565 = 640 <small>(lại nhớ sang hàng trăm)</small>');await wait(1800);if(!alive())return;
+    bd.add('640 − 140 = <span class="key">500</span>');boop();
+    talk('Ra <b>500</b>, nhưng phải làm <b>3 phép tính khó</b>, toàn mượn với nhớ. Các số này có một <b class="key">bí mật</b>: nếu được đổi chỗ, chúng sẽ ghép thành số tròn! Đi xem nào.',
+         'Ra 500, nhưng phải làm 3 phép tính khó, toàn mượn với nhớ. Các số này có một bí mật: nếu được đổi chỗ, chúng sẽ ghép thành số tròn! Đi xem nào.');
+    buttons([{label:'Xem bí mật ▸',kind:'go',on:next}]);
+  }}]);
+}
+
+function xJump(){
+  const alive=start();
+  const svg=newSvg(130);const ch=exprChips(svg,66);
+  const bd=board();
+  bd.add('435 − 360 + 565 − 140');
+  talk('Nhìn kìa: <b>435 với 565</b> ghép lại là 1000 tròn! Nhưng chúng đang đứng xa nhau. Cho <b>+565 nhảy</b> lên đứng cạnh 435 nhé. Nhớ luật: <b class="key">số nhảy đi đâu, dấu của nó theo đó</b>!',
+       'Nhìn kìa: 435 với 565 ghép lại là 1000 tròn! Nhưng chúng đang đứng xa nhau. Cho cộng 565 nhảy lên đứng cạnh 435 nhé. Nhớ luật: số nhảy đi đâu, dấu của nó theo đó!');
+  buttons([{label:'Cho +565 nhảy!',kind:'go',on:async()=>{
+    lockButtons(true);
+    ch[2].st.classList.add('pop');
+    await Promise.all([ch[2].fly(EXS[1],66,1100),ch[1].fly(EXS[2],66,1100)]);if(!alive())return;ting();
+    bd.add('= 435 <span style="color:#8fe39b">+ 565</span> − 360 − 140 <small>(dấu + đi theo 565)</small>');
+    talk('Đổi chỗ xong: <b>435 + 565 − 360 − 140</b>. Chú ý: 565 mang theo dấu <b class="key">+</b> của nó, 360 vẫn giữ dấu <b class="key">−</b> của nó. Không ai bị mất dấu cả!',
+         'Đổi chỗ xong: 435 cộng 565 trừ 360 trừ 140. Chú ý: 565 mang theo dấu cộng của nó, 360 vẫn giữ dấu trừ của nó. Không ai bị mất dấu cả!');
+    buttons([{label:'Vì sao được nhảy?',kind:'ghost',on:()=>{
+      talk('Vì cả dãy chỉ có cộng và trừ. Con có 435 kẹo, <b>cho đi 360, nhận 565, cho đi 140</b> — nhận trước hay cho trước thì cuối cùng vẫn còn từng ấy kẹo!',
+           'Vì cả dãy chỉ có cộng và trừ. Con có 435 viên kẹo, cho đi 360, nhận 565, cho đi 140. Nhận trước hay cho trước thì cuối cùng vẫn còn từng ấy kẹo!');
+      buttons([{label:'Dựng cổng dấu ▸',kind:'go',on:next}]);
+    }},{label:'Dựng cổng dấu ▸',kind:'go',on:next}]);
+  }}]);
+}
+
+function xGate(){
+  const alive=start();
+  const svg=newSvg(300);
+  const ch=exprChips(svg,46);ch[2].set(EXS[1],46);ch[1].set(EXS[2],46);
+  const gate=(x,w,sign,color)=>{
+    const g=el('g',{opacity:0},svg);
+    el('path',{d:`M${x} 158 Q${x-16} 198 ${x} 238`,fill:'none',stroke:COL.ink,'stroke-width':5,'stroke-linecap':'round'},g);
+    el('path',{d:`M${x+w} 158 Q${x+w+16} 198 ${x+w} 238`,fill:'none',stroke:COL.ink,'stroke-width':5,'stroke-linecap':'round'},g);
+    el('circle',{cx:x-2,cy:134,r:20,fill:color,stroke:COL.ink,'stroke-width':3},g);
+    txt(g,x-2,145,sign,{'font-size':30,fill:'#fff'});
+    txt(g,x+w/2,272,sign==='+'?'cổng CỘNG: vào giữ nguyên dấu':'cổng TRỪ: vào phải lộn dấu!',{'font-size':15,fill:sign==='+'?COL.leaf:COL.berry});
+    return g;
+  };
+  const g1=gate(76,208,'+',COL.leaf),g2=gate(326,208,'−',COL.berry);
+  const bd=board();
+  bd.add('= 435 + 565 − 360 − 140');
+  talk('Giờ mình <b>đóng ngoặc</b> để gom nhóm. Ngoặc giống cái <b>cổng</b>, trước cổng treo một dấu. Có hai loại cổng với luật khác nhau. Bấm dựng cổng xem!',
+       'Giờ mình đóng ngoặc để gom nhóm. Ngoặc giống cái cổng, trước cổng treo một dấu. Có hai loại cổng với luật khác nhau. Bấm dựng cổng xem!');
+  buttons([{label:'Dựng hai cái cổng',kind:'go',on:async()=>{
+    lockButtons(true);
+    await Promise.all([fadeIn(g1),fadeIn(g2)]);if(!alive())return;ting();
+    talk('Cổng xanh treo dấu <b class="key">+</b>, cổng đỏ treo dấu <b class="key">−</b>. Luật chơi: đi qua <b>cổng cộng</b> thì <b>giữ nguyên dấu</b>. Đi qua <b>cổng trừ</b> thì <b>bị lộn dấu</b>: trừ thành cộng, cộng thành trừ!',
+         'Cổng xanh treo dấu cộng, cổng đỏ treo dấu trừ. Luật chơi: đi qua cổng cộng thì giữ nguyên dấu. Đi qua cổng trừ thì bị lộn dấu: trừ thành cộng, cộng thành trừ!');
+    buttons([{label:'Cho 435 và +565 vào cổng cộng',kind:'go',on:async()=>{
+      lockButtons(true);
+      await ch[0].fly(126,198,900);if(!alive())return;
+      await ch[2].fly(236,198,900);if(!alive())return;ting();
+      bd.add('= <span style="color:#8fe39b">(435 + 565)</span> − 360 − 140 <small>cổng cộng: dấu giữ nguyên</small>');
+      talk('Hai bạn vào <b>cổng cộng</b>: dấu <b>giữ nguyên</b>, trong ngoặc vẫn là 435 + 565. Giờ đến hai bạn bị trừ — họ phải vào <b>cổng trừ</b>!',
+           'Hai bạn vào cổng cộng: dấu giữ nguyên, trong ngoặc vẫn là 435 cộng 565. Giờ đến hai bạn bị trừ — họ phải vào cổng trừ!');
+      buttons([{label:'Cho −360 và −140 vào cổng trừ',kind:'go',on:async()=>{
+        lockButtons(true);
+        await ch[1].fly(376,198,950,()=>ch[1].flip(''));if(!alive())return;
+        await ch[3].fly(486,198,950,()=>ch[3].flip('+'));if(!alive())return;ting();
+        bd.add('= (435 + 565) <span style="color:#ff9aa9">− (360 + 140)</span> <small>cổng trừ: lộn dấu, − thành +</small>');
+        talk('Thấy chưa! Qua <b>cổng trừ</b>, dấu <b>−</b> của 360 và 140 bị <b class="key">lộn thành +</b>. Bên ngoài là <b>−360 −140</b>, vào trong ngoặc thành <b>(360 + 140)</b>. Giờ tính nhẹ tênh!',
+             'Thấy chưa! Qua cổng trừ, dấu trừ của 360 và 140 bị lộn thành cộng. Bên ngoài là trừ 360 trừ 140, vào trong ngoặc thành 360 cộng 140. Giờ tính nhẹ tênh!');
+        buttons([{label:'Tính thôi!',kind:'go',on:()=>{
+          bd.add('= 1000 − 500 = <span class="key">500</span>');fanfare();
+          bd.memo('Cổng cộng hiền: vào giữ nguyên dấu. Cổng trừ dữ: vào phải lộn dấu (− thành +, + thành −).');
+          talk('<b>1000 − 500 = 500</b> — nhẩm được luôn, khỏi đặt tính! Vẫn ra đúng 500 như cách chậm, nhưng nhanh hơn hẳn. Con đọc theo: <b>cổng cộng hiền, vào giữ nguyên. Cổng trừ dữ, vào lộn dấu!</b>',
+               'Một nghìn trừ 500 bằng 500 — nhẩm được luôn, khỏi đặt tính! Vẫn ra đúng 500 như cách chậm, nhưng nhanh hơn hẳn. Con đọc theo: cổng cộng hiền, vào giữ nguyên. Cổng trừ dữ, vào lộn dấu!');
+          buttons([{label:'Câu đố ▸',kind:'go',on:next}]);
+        }}]);
+      }}]);
+    }}]);
+  }}]);
+}
+
+function exprDraw(lines){return svg=>{gridPaper(svg,150);lines.forEach((l,i)=>txt(svg,280,56+i*44,l,{'font-size':i?22:28,fill:i?COL.soft:COL.ink}));return{};};}
+function xQuiz(){
+  quizScreen([
+    {draw:exprDraw(['25 + 37 + 75 + 63','Nhóm thế nào để tính nhanh?']),h:150,
+     q:'Tính nhanh <b>25 + 37 + 75 + 63</b>: nên cho số nào nhảy cạnh số nào?',qv:'Câu một. Tính nhanh 25 cộng 37 cộng 75 cộng 63: nên cho số nào nhảy cạnh số nào?',
+     board:['= (25 + 75) + (37 + 63)','= 100 + 100 = <span class="key">200</span>'],
+     opts:[
+      {label:'(25+75) và (37+63)',ok:true,fb:'Chuẩn luôn! 25+75 = 100, 37+63 = 100. Hai số tròn trăm, cộng nhẩm ra <b class="key">200</b>.',fbv:'Chuẩn luôn! 25 cộng 75 bằng 100, 37 cộng 63 bằng 100. Hai số tròn trăm, cộng nhẩm ra 200.'},
+      {label:'(25+37) và (75+63)',fb:'25+37 = 62, 75+63 = 138 — chẳng tròn gì cả, vẫn khó tính. Tìm hai số ghép lại <b>tròn trăm</b> cơ!',fbv:'25 cộng 37 bằng 62, 75 cộng 63 bằng 138 — chẳng tròn gì cả, vẫn khó tính. Tìm hai số ghép lại tròn trăm cơ!'},
+      {label:'Cứ cộng lần lượt',fb:'Cũng ra kết quả, nhưng phải nhớ với mượn mấy lần. Nhảy chỗ cho khéo thì <b>nhẩm trong đầu</b> được luôn!',fbv:'Cũng ra kết quả, nhưng phải nhớ với mượn mấy lần. Nhảy chỗ cho khéo thì nhẩm trong đầu được luôn!'}]},
+    {draw:exprDraw(['800 − 250 − 150','= 800 − (250 ? 150)']),h:150,
+     q:'Điền dấu vào chỗ hỏi: <b>800 − 250 − 150 = 800 − (250 ? 150)</b>',qv:'Câu hai. 800 trừ 250 trừ 150 bằng 800 trừ, mở ngoặc, 250 hỏi chấm 150, đóng ngoặc. Điền dấu gì vào chỗ hỏi chấm?',
+     board:['800 − 250 − 150 = 800 − (250 <span class="key">+</span> 150)','= 800 − 400 = <span class="key">400</span>'],
+     opts:[
+      {label:'Dấu −',fb:'Suýt bẫy! −150 đi qua <b>cổng trừ</b> thì bị <b class="key">lộn dấu</b> thành +150. Nếu để dấu − thì thành 800−100=700, sai mất rồi.',fbv:'Suýt bẫy! Trừ 150 đi qua cổng trừ thì bị lộn dấu thành cộng 150. Nếu để dấu trừ thì thành 800 trừ 100 bằng 700, sai mất rồi.'},
+      {label:'Dấu +',ok:true,fb:'Đúng! Cổng trừ lộn dấu: −150 vào ngoặc thành +150. Lấy đi 250 rồi lấy đi 150 cũng như lấy đi một lần (250+150) = 400.',fbv:'Đúng! Cổng trừ lộn dấu: trừ 150 vào ngoặc thành cộng 150. Lấy đi 250 rồi lấy đi 150 cũng như lấy đi một lần 400.'},
+      {label:'Dấu ×',fb:'Cổng dấu chỉ đổi giữa cộng và trừ thôi, không biến ra phép nhân được đâu!',fbv:'Cổng dấu chỉ đổi giữa cộng và trừ thôi, không biến ra phép nhân được đâu!'}]},
+    {draw:exprDraw(['536 − (136 + 200)','Mở ngoặc ra thì sao?']),h:150,
+     q:'<b>536 − (136 + 200)</b> bằng bao nhiêu?',qv:'Câu ba. 536 trừ, mở ngoặc, 136 cộng 200, đóng ngoặc, bằng bao nhiêu?',
+     board:['536 − (136 + 200) = 536 − 136 − 200 <small>(ra khỏi cổng trừ cũng lộn dấu)</small>','= 400 − 200 = <span class="key">200</span>'],
+     opts:[
+      {label:'200',ok:true,fb:'Giỏi quá! Mở cổng trừ, +200 ra ngoài lộn thành −200: 536 − 136 − 200 = 400 − 200 = <b class="key">200</b>. Đi vào lộn dấu thì đi ra cũng lộn dấu.',fbv:'Giỏi quá! Mở cổng trừ, cộng 200 ra ngoài lộn thành trừ 200. 536 trừ 136 bằng 400, trừ 200 bằng 200. Đi vào lộn dấu thì đi ra cũng lộn dấu.'},
+      {label:'600',fb:'Con vừa <b>cộng</b> 200 rồi. Dấu trừ đứng trước cổng nghĩa là phải <b>bớt đi cả nhóm trong ngoặc</b>, bớt 136 và bớt cả 200.',fbv:'Con vừa cộng 200 rồi. Dấu trừ đứng trước cổng nghĩa là phải bớt đi cả nhóm trong ngoặc, bớt 136 và bớt cả 200.'},
+      {label:'400',fb:'Con mới trừ 136 thôi, còn <b>quên bạn 200</b> trong ngoặc. Cổng trừ là trừ <b>tất cả</b> những ai trong cổng!',fbv:'Con mới trừ 136 thôi, còn quên bạn 200 trong ngoặc. Cổng trừ là trừ tất cả những ai trong cổng!'}]}
+  ],()=>{setDone(WORLDS.expr.key);next();});
+}
+function xDone(){
+  start();
+  stage.innerHTML=`<div class="done">
+    <svg viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>
+      <rect x="22" y="44" width="34" height="24" rx="8" fill="#fff" stroke="${COL.ink}" stroke-width="3"/>
+      <rect x="64" y="56" width="34" height="24" rx="8" fill="#fff" stroke="${COL.ink}" stroke-width="3"/>
+      <path d="M52 38 Q66 22 82 44" fill="none" stroke="${COL.berry}" stroke-width="4" stroke-linecap="round"/>
+      <path d="M82 44 l-9 -2 m9 2 l-2 -9" stroke="${COL.berry}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <h2>Huy hiệu Tính Nhanh!</h2>
+    <div class="nb">${noteCards(NOTES.expr,true)}</div>
+  </div>`;
+  bindNotes();fanfare();
+  talk('Con đã mở khóa <b>Huy hiệu Tính Nhanh</b>! Nhớ hai luật: số nhảy đi đâu dấu theo đó, và cổng trừ thì lộn dấu bên trong.',
+       'Con đã mở khóa huy hiệu Tính Nhanh! Nhớ hai luật: số nhảy đi đâu dấu theo đó, và cổng trừ thì lộn dấu bên trong.');
+  buttons([{label:'Chơi lại',on:()=>go('expr')},{label:'Về bản đồ',kind:'go',on:()=>go(null)}]);
+}
+WORLDS.expr.screens=[xSlow,xJump,xGate,xQuiz,xDone];
+
+/* ================================================================
+   THẾ GIỚI KHỐI HỘP
+   ================================================================ */
+function isoBox(svg,x0,y0,L,W,H,u,c={}){
+  const dx=W*u*.52,dy=W*u*.30,fy=y0-H*u;
+  const g=el('g',{},svg);
+  const front=el('path',{d:`M${x0} ${y0}h${L*u}v${-H*u}h${-L*u}Z`,fill:c.f||'#ffd97f',stroke:COL.ink,'stroke-width':3,'stroke-linejoin':'round'},g);
+  const top=el('path',{d:`M${x0} ${fy}l${dx} ${-dy}h${L*u}l${-dx} ${dy}Z`,fill:c.t||'#ffeab3',stroke:COL.ink,'stroke-width':3,'stroke-linejoin':'round'},g);
+  const side=el('path',{d:`M${x0+L*u} ${y0}l${dx} ${-dy}v${-H*u}l${-dx} ${dy}Z`,fill:c.s||'#eab54e',stroke:COL.ink,'stroke-width':3,'stroke-linejoin':'round'},g);
+  return {g,front,top,side,dx,dy};
+}
+
+function bNet(){
+  const alive=start();
+  const svg=newSvg(300);
+  const cube=isoBox(svg,64,220,2.4,2.4,2.4,28);
+  el('path',{d:'M97 220 v-67 m-10 0 q10 -14 20 0',fill:'none',stroke:COL.berry,'stroke-width':4,'stroke-linecap':'round',opacity:.9},cube.g);
+  const cnt=txt(svg,420,46,'',{'font-size':30,fill:COL.berry});
+  talk('Đây là <b>hộp quà hình lập phương</b>. Nó có mấy mặt nhỉ? Nhìn ngoài chỉ thấy 3 mặt, còn mấy mặt trốn đằng sau. Mình <b>trải hộp ra</b> cho chúng hết trốn nhé!',
+       'Đây là hộp quà hình lập phương. Nó có mấy mặt nhỉ? Nhìn ngoài chỉ thấy 3 mặt, còn mấy mặt trốn đằng sau. Mình trải hộp ra cho chúng hết trốn nhé!');
+  buttons([{label:'Trải hộp ra',kind:'go',on:async()=>{
+    lockButtons(true);
+    await tween(500,t=>cube.g.setAttribute('opacity',1-t));if(!alive())return;cube.g.remove();
+    const cs=56,ox=262,oy=22;
+    const spots=[[1,0],[0,1],[1,1],[2,1],[1,2],[1,3]];
+    const cols=['#ffd97f','#ffeab3','#eab54e','#ffd97f','#ffeab3','#eab54e'];
+    for(let i=0;i<6;i++){
+      const [cx,cy]=spots[i];
+      const r=el('rect',{x:-cs/2,y:-cs/2,width:cs,height:cs,fill:cols[i],stroke:COL.ink,'stroke-width':3,rx:4,transform:'translate(120 170)'},svg);
+      const t=txt(svg,120,179,String(i+1),{'font-size':26});
+      const tx=ox+cx*cs+cs/2,ty=oy+cy*cs+cs/2;
+      await tween(420,(e)=>{const xx=lerp(120,tx,e),yy=lerp(170,ty,e)-50*Math.sin(Math.PI*e);r.setAttribute('transform',`translate(${xx} ${yy})`);t.setAttribute('x',xx);t.setAttribute('y',yy+9);});
+      if(!alive())return;cnt.textContent=(i+1)+' mặt';popEl(cnt);tone(600+i*90,.12);
+    }
+    ting();
+    const bd=board();
+    bd.add('Hình lập phương có <span class="key">6 mặt</span>');
+    bd.add('Mặt nào cũng là <span class="L">hình vuông</span> bằng nhau');
+    talk('Đếm được <b class="key">6 mặt</b>! Và nhìn kìa: mặt nào cũng là <b>hình vuông</b>, to bằng nhau y hệt. Chính vì thế nó tên là <b>lập phương</b>. Giờ đếm tiếp đỉnh và cạnh nhé!',
+         'Đếm được 6 mặt! Và nhìn kìa: mặt nào cũng là hình vuông, to bằng nhau y hệt. Chính vì thế nó tên là lập phương. Giờ đếm tiếp đỉnh và cạnh nhé!');
+    buttons([{label:'Đếm đỉnh và cạnh ▸',kind:'go',on:next}]);
+  }}]);
+}
+
+function bCount(){
+  const alive=start();
+  const svg=newSvg(300);
+  const u=120,x0=170,y0=240,dx=62,dy=36;
+  const F=[[x0,y0],[x0+u,y0],[x0+u,y0-u],[x0,y0-u]];
+  const B=F.map(([x,y])=>[x+dx,y-dy]);
+  const edges=[[F[0],F[1]],[F[1],F[2]],[F[2],F[3]],[F[3],F[0]],[B[0],B[1]],[B[1],B[2]],[B[2],B[3]],[B[3],B[0]],[F[0],B[0]],[F[1],B[1]],[F[2],B[2]],[F[3],B[3]]];
+  const hidden=[[B[0],B[1]],[B[3],B[0]],[F[0],B[0]]];
+  const els=edges.map(([a,b])=>{
+    const hid=hidden.some(([p,q])=>p===a&&q===b);
+    return el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#9aa9b6','stroke-width':3,'stroke-dasharray':hid?'7 6':'none'},svg);
+  });
+  const verts=[...F,...B].map(([x,y])=>el('circle',{cx:x,cy:y,r:7,fill:'#c3ced8',stroke:COL.ink,'stroke-width':2},svg));
+  const cnt=txt(svg,440,60,'',{'font-size':30,fill:COL.berry});
+  const lab=txt(svg,440,92,'',{'font-size':17,fill:COL.soft});
+  talk('Đây là bộ khung của khối lập phương, như làm bằng que tính. Nét đứt là các que <b>khuất phía sau</b>. <b>Đỉnh</b> là chỗ các que chụm đầu, <b>cạnh</b> là từng cái que. Đếm nào!',
+       'Đây là bộ khung của khối lập phương, như làm bằng que tính. Nét đứt là các que khuất phía sau. Đỉnh là chỗ các que chụm đầu, cạnh là từng cái que. Đếm nào!');
+  buttons([{label:'Đếm đỉnh',kind:'go',on:async()=>{
+    lockButtons(true);lab.textContent='đỉnh';
+    for(let i=0;i<8;i++){verts[i].setAttribute('fill',COL.berry);verts[i].setAttribute('r',9);popEl(verts[i]);cnt.textContent=i+1;popEl(cnt);tone(500+i*70,.1);await wait(340);if(!alive())return;}
+    ting();
+    talk('<b class="key">8 đỉnh</b>! Bốn đỉnh mặt trước, bốn đỉnh mặt sau. Giờ đếm cạnh — từng cái que một.','Tám đỉnh! Bốn đỉnh mặt trước, bốn đỉnh mặt sau. Giờ đếm cạnh — từng cái que một.');
+    buttons([{label:'Đếm cạnh',kind:'go',on:async()=>{
+      lockButtons(true);lab.textContent='cạnh';cnt.textContent='';
+      for(let i=0;i<12;i++){els[i].setAttribute('stroke',COL.wide);els[i].setAttribute('stroke-width',6);cnt.textContent=i+1;popEl(cnt);tone(500+i*60,.09);await wait(300);if(!alive())return;}
+      ting();
+      const bd=board();
+      bd.add('Hình lập phương: <span class="key">6 mặt</span> vuông · <span class="key">8 đỉnh</span> · <span class="key">12 cạnh</span> bằng nhau');
+      bd.memo('Hình lập phương có 6 mặt là hình vuông bằng nhau, 8 đỉnh và 12 cạnh dài bằng nhau. Hình hộp chữ nhật cũng có 6 mặt, 8 đỉnh, 12 cạnh, nhưng các mặt là hình chữ nhật.');
+      talk('<b class="key">12 cạnh</b>, cạnh nào cũng dài bằng nhau! Vậy là đủ bộ: <b>6 mặt, 8 đỉnh, 12 cạnh</b>. Hình hộp chữ nhật cũng có đủ 6 mặt, 8 đỉnh, 12 cạnh như thế — khác nhau ở chỗ nào? Sang màn sau sẽ rõ!',
+           'Mười hai cạnh, cạnh nào cũng dài bằng nhau! Vậy là đủ bộ: 6 mặt, 8 đỉnh, 12 cạnh. Hình hộp chữ nhật cũng có đủ 6 mặt, 8 đỉnh, 12 cạnh như thế — khác nhau ở chỗ nào? Sang màn sau sẽ rõ!');
+      buttons([{label:'Co kéo khối hộp ▸',kind:'go',on:next}]);
+    }}]);
+  }}]);
+}
+
+function bStretch(){
+  const alive=start();
+  const svg=newSvg(320);
+  const u=36,x0=120,y0=268,W=3,H=3;
+  const gBox=el('g',{},svg);
+  const ring=el('circle',{r:19,fill:'none',stroke:COL.sun,'stroke-width':4,class:'pulse'},svg);
+  const hd=el('circle',{r:13,fill:COL.sun,stroke:COL.ink,'stroke-width':3},svg);
+  const bd=board();
+  const line1=bd.add('');
+  let L=5,solved=false,dragging=false,shownL=-1;
+  const draw=()=>{
+    gBox.innerHTML='';
+    const b=isoBox(gBox,x0,y0,L,W,H,u);gBox.appendChild(b.g);
+    const dx=b.dx,dy=b.dy;
+    txt(gBox,x0+L*u/2,y0+26,'dài '+(Math.round(L*10)/10)+' ô',{'font-size':19,fill:COL.long});
+    txt(gBox,x0-14,y0-H*u/2+6,'cao 3 ô',{'font-size':19,fill:COL.leaf,'text-anchor':'end'});
+    txt(gBox,x0+L*u+dx/2+14,y0-dy/2-2,'rộng 3 ô',{'font-size':19,fill:COL.wide,'text-anchor':'start'});
+    const hx=x0+L*u+dx/2,hy=y0-dy/2-H*u/2;
+    hd.setAttribute('cx',hx);hd.setAttribute('cy',hy);ring.setAttribute('cx',hx);ring.setAttribute('cy',hy);
+    const Lr=Math.round(L*10)/10;
+    if(shownL!==Lr){shownL=Lr;line1.innerHTML=`dài ${Lr} · rộng 3 · cao 3 ${Lr===3?'→ <span class="key">BẰNG NHAU!</span>':'→ chưa bằng nhau'}`;}
+  };
+  draw();
+  onDrag(svg,(p,phase)=>{
+    if(phase==='up'){dragging=false;release();return;}
+    dragging=true;ring.remove();
+    L=Math.max(2,Math.min(5,(p.x-x0-W*u*.26)/u));
+    draw();
+  });
+  talk('Đây là <b>hình hộp chữ nhật</b>: dài 5, rộng 3, cao 3. Nó dài quá! Con <b>kéo chấm vàng</b> (hoặc bấm nút) để co cái hộp lại. Thử làm cho <b>dài, rộng, cao bằng nhau</b> xem nó biến thành gì!',
+       'Đây là hình hộp chữ nhật: dài 5, rộng 3, cao 3. Nó dài quá! Con kéo chấm vàng, hoặc bấm nút, để co cái hộp lại. Thử làm cho dài, rộng, cao bằng nhau xem nó biến thành gì!');
+  const nudge=async d=>{
+    const t=Math.max(2,Math.min(5,Math.round(L)+d));const L0=L;click();
+    await tween(360,e=>{L=lerp(L0,t,e);draw();});
+    release();
+  };
+  function release(){
+    L=Math.max(2,Math.min(5,Math.round(L)));draw();
+    if(L===3&&!solved){
+      solved=true;fanfare();
+      bd.add('dài = rộng = cao = 3 → <span class="key">HÌNH LẬP PHƯƠNG</span>');
+      bd.memo('Hình lập phương là hình hộp chữ nhật đặc biệt: chiều dài, chiều rộng, chiều cao bằng nhau, nên 6 mặt đều là hình vuông.');
+      talk('<b>TUYỆT!</b> Dài = rộng = cao = 3. Mọi cạnh bằng nhau, 6 mặt đều thành <b>hình vuông</b> — cái hộp đã biến thành <b class="key">HÌNH LẬP PHƯƠNG</b>!',
+           'Tuyệt! Dài bằng rộng bằng cao bằng 3. Mọi cạnh bằng nhau, 6 mặt đều thành hình vuông — cái hộp đã biến thành hình lập phương!');
+      buttons([{label:'◀ Co lại',on:()=>nudge(-1)},{label:'Kéo dài ra ▶',on:()=>nudge(1)},{label:'Câu đố ▸',kind:'go',on:next}]);
+    } else if(!solved){
+      boop();
+      talk(`Dài ${L}, rộng 3, cao 3 — vẫn có cạnh dài cạnh ngắn, nên đây là <b>hình hộp chữ nhật</b>. Kéo tiếp cho <b>cả ba số bằng nhau</b> xem điều gì xảy ra!`,
+           `Dài ${L}, rộng 3, cao 3 — vẫn có cạnh dài cạnh ngắn, nên đây là hình hộp chữ nhật. Kéo tiếp cho cả ba số bằng nhau xem điều gì xảy ra!`);
+    }
+  }
+  buttons([{label:'◀ Co lại',on:()=>nudge(-1)},{label:'Kéo dài ra ▶',on:()=>nudge(1)}]);
+}
+
+function boxQuizDraw(svg){const b=isoBox(svg,200,200,2.2,2.2,2.2,30);gridPaper(svg,230);svg.appendChild(b.g);return{};}
+function bQuiz(){
+  quizScreen([
+    {draw:boxQuizDraw,q:'Hình lập phương có mấy mặt?',qv:'Câu một. Hình lập phương có mấy mặt?',
+     board:['Hình lập phương: <span class="key">6 mặt</span> vuông'],
+     opts:[
+      {label:'4 mặt',fb:'Thiếu rồi! Nhớ lúc trải hộp ra không — còn mặt trên với mặt dưới nữa. Đủ <b class="key">6 mặt</b> cơ.',fbv:'Thiếu rồi! Nhớ lúc trải hộp ra không — còn mặt trên với mặt dưới nữa. Đủ 6 mặt cơ.'},
+      {label:'6 mặt',ok:true,fb:'Đúng! Trải hộp ra đếm được đủ <b class="key">6 mặt</b>, mặt nào cũng là hình vuông.',fbv:'Đúng! Trải hộp ra đếm được đủ 6 mặt, mặt nào cũng là hình vuông.'},
+      {label:'8 mặt',fb:'8 là số <b>đỉnh</b> đấy! Mặt thì chỉ có 6 thôi: trước, sau, trái, phải, trên, dưới.',fbv:'Tám là số đỉnh đấy! Mặt thì chỉ có 6 thôi: trước, sau, trái, phải, trên, dưới.'}]},
+    {draw:boxQuizDraw,q:'Mỗi mặt của hình <b>lập phương</b> là hình gì?',qv:'Câu hai. Mỗi mặt của hình lập phương là hình gì?',
+     board:['6 mặt đều là <span class="L">hình vuông</span> bằng nhau'],
+     opts:[
+      {label:'Hình vuông',ok:true,fb:'Chính xác! Vì 12 cạnh bằng nhau hết nên mặt nào cũng là <b>hình vuông</b> bằng nhau.',fbv:'Chính xác! Vì 12 cạnh bằng nhau hết nên mặt nào cũng là hình vuông bằng nhau.'},
+      {label:'Hình chữ nhật dài',fb:'Đó là mặt của <b>hình hộp chữ nhật</b> cơ. Lập phương thì mọi cạnh bằng nhau nên mặt phải là hình vuông.',fbv:'Đó là mặt của hình hộp chữ nhật cơ. Lập phương thì mọi cạnh bằng nhau nên mặt phải là hình vuông.'},
+      {label:'Hình tròn',fb:'Hình tròn thì lăn mất rồi! Mặt của khối hộp là hình có 4 cạnh thẳng.',fbv:'Hình tròn thì lăn mất rồi! Mặt của khối hộp là hình có 4 cạnh thẳng.'}]},
+    {draw:svg=>{gridPaper(svg,240);const b=isoBox(svg,150,200,4,2,2,32);svg.appendChild(b.g);txt(svg,214,232,'dài 4',{'font-size':17,fill:COL.long});txt(svg,136,166,'cao 2',{'font-size':17,fill:COL.leaf,'text-anchor':'end'});txt(svg,310,184,'rộng 2',{'font-size':17,fill:COL.wide,'text-anchor':'start'});return{};},
+     q:'Hộp sữa dài 4, rộng 2, cao 2. Nó có phải hình lập phương không?',qv:'Câu ba. Hộp sữa dài 4, rộng 2, cao 2. Nó có phải hình lập phương không?',
+     board:['dài 4 ≠ rộng 2 → là <span class="key">hình hộp chữ nhật</span>'],
+     opts:[
+      {label:'Phải, vì có 6 mặt',fb:'Có 6 mặt thì hộp nào cũng có! Lập phương còn cần <b>dài = rộng = cao</b> nữa, mà 4 đâu có bằng 2.',fbv:'Có 6 mặt thì hộp nào cũng có! Lập phương còn cần dài bằng rộng bằng cao nữa, mà 4 đâu có bằng 2.'},
+      {label:'Không, vì dài ≠ rộng',ok:true,fb:'Giỏi lắm! Dài 4 mà rộng chỉ 2, các cạnh không bằng nhau nên nó là <b>hình hộp chữ nhật</b>. Phải co dài về 2 như con làm lúc nãy thì mới thành lập phương.',fbv:'Giỏi lắm! Dài 4 mà rộng chỉ 2, các cạnh không bằng nhau nên nó là hình hộp chữ nhật. Phải co dài về 2 như con làm lúc nãy thì mới thành lập phương.'},
+      {label:'Không biết được',fb:'Biết được chứ! Chỉ cần so ba số: dài, rộng, cao. Bằng nhau hết → lập phương. Khác nhau → hộp chữ nhật.',fbv:'Biết được chứ! Chỉ cần so ba số: dài, rộng, cao. Bằng nhau hết thì là lập phương. Khác nhau thì là hộp chữ nhật.'}]}
+  ],()=>{setDone(WORLDS.box.key);next();});
+}
+function bDone(){
+  start();
+  stage.innerHTML=`<div class="done">
+    <svg viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>
+      <path d="M38 76 h32 v-32 h-32 Z" fill="#ffd97f" stroke="${COL.ink}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M38 44 l12 -9 h32 l-12 9 Z" fill="#ffeab3" stroke="${COL.ink}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M70 76 l12 -9 v-32 l-12 9 Z" fill="#eab54e" stroke="${COL.ink}" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+    <h2>Huy hiệu Khối Hộp!</h2>
+    <div class="nb">${noteCards(NOTES.box,true)}</div>
+  </div>`;
+  bindNotes();fanfare();
+  talk('Con đã mở khóa <b>Huy hiệu Khối Hộp</b>! Nhớ nhé: 6 mặt, 8 đỉnh, 12 cạnh — và lập phương là cái hộp có dài, rộng, cao bằng nhau.',
+       'Con đã mở khóa huy hiệu Khối Hộp! Nhớ nhé: 6 mặt, 8 đỉnh, 12 cạnh — và lập phương là cái hộp có dài, rộng, cao bằng nhau.');
+  buttons([{label:'Chơi lại',on:()=>go('box')},{label:'Về bản đồ',kind:'go',on:()=>go(null)}]);
+}
+WORLDS.box.screens=[bNet,bCount,bStretch,bQuiz,bDone];
+
+/* ================================================================
+   THẾ GIỚI GẤP — phép nhân
+   ================================================================ */
+const CANDY_COLS=['#e8475f','#2f7fd8','#4f9a45','#f08a24','#9b59b6'];
+function candy(svg,x,y,c){
+  const g=el('g',{},svg);
+  el('circle',{r:11,fill:c,stroke:COL.ink,'stroke-width':2},g);
+  el('circle',{cx:-4,cy:-4,r:3,fill:'#ffffffb0'},g);
+  const o={g,x,y,
+    set(nx,ny){o.x=nx;o.y=ny;g.setAttribute('transform',`translate(${nx} ${ny})`);},
+    fly(nx,ny,ms=600){const x0=o.x,y0=o.y;return tween(ms,e=>{g.setAttribute('transform',`translate(${lerp(x0,nx,e)} ${lerp(y0,ny,e)-46*Math.sin(Math.PI*e)})`);}).then(()=>{o.x=nx;o.y=ny;});}};
+  o.set(x,y);return o;
+}
+
+function gFold(){
+  const alive=start();
+  const svg=newSvg(260);
+  el('line',{x1:60,y1:232,x2:500,y2:232,stroke:COL.soft,'stroke-width':3,'stroke-linecap':'round'},svg);
+  const rx=i=>196+i*42, ry=j=>214-j*34;
+  for(let i=0;i<4;i++)candy(svg,rx(i),ry(0),CANDY_COLS[0]);
+  const cnt=txt(svg,90,120,'4',{'font-size':46,fill:COL.berry});
+  txt(svg,90,150,'viên kẹo',{'font-size':16,fill:COL.soft});
+  const rowT=txt(svg,470,120,'1 thếp',{'font-size':22,fill:COL.soft});
+  const bd=board();
+  bd.add('1 thếp: có 4 viên');
+  let rows=1;
+  talk('Đây là <b>1 thếp kẹo</b>: 4 viên xếp thành hàng. Chữ <b class="key">GẤP</b> nghĩa là <b>chồng thêm thếp y hệt lên</b>, như gấp thếp giấy. Bấm <b>Gấp lên!</b> xem số kẹo thay đổi thế nào.',
+       'Đây là một thếp kẹo: 4 viên xếp thành hàng. Chữ gấp nghĩa là chồng thêm thếp y hệt lên, như gấp thếp giấy. Bấm gấp lên, xem số kẹo thay đổi thế nào.');
+  const foldUp=async b=>{
+    lockButtons(true);
+    const cs=[];
+    for(let i=0;i<4;i++)cs.push(candy(svg,rx(i),ry(0),CANDY_COLS[rows%CANDY_COLS.length]));
+    await Promise.all(cs.map((c,i)=>wait(i*90).then(()=>c.fly(rx(i),ry(rows),620))));
+    if(!alive())return;rows++;ting();
+    cnt.textContent=String(4*rows);popEl(cnt);
+    rowT.textContent=rows+' thếp';popEl(rowT);
+    const plus=Array(rows).fill('4').join(' + ');
+    bd.add(`${rows} thếp: 4 × ${rows} = ${plus} = <span class="key">${4*rows}</span>`);
+    if(rows===3){
+      talk('Đây rồi: <b>4 gấp 3 lần</b>! Có 3 thếp giống hệt nhau: 4 + 4 + 4 = <b class="key">12</b>. Cộng mãi một số thì viết gọn là <b>4 × 3</b>. <b>GẤP 3 LẦN nghĩa là NHÂN 3</b>. Gấp thêm lần nữa cũng được!',
+           'Đây rồi: 4 gấp 3 lần! Có 3 thếp giống hệt nhau: 4 cộng 4 cộng 4 bằng 12. Cộng mãi một số thì viết gọn là 4 nhân 3. Gấp 3 lần nghĩa là nhân 3. Gấp thêm lần nữa cũng được!');
+      buttons([{label:'Gấp lên lần nữa!',on:foldUp},{label:'Ghi nhớ ▸',kind:'go',on:finish}]);
+    } else if(rows>=5){
+      talk(`5 thếp rồi, cao quá! 4 × 5 = <b>20</b>. Con thấy quy luật chưa: gấp mấy lần thì <b>nhân mấy</b>.`,
+           `5 thếp rồi, cao quá! 4 nhân 5 bằng 20. Con thấy quy luật chưa: gấp mấy lần thì nhân mấy.`);
+      buttons([{label:'Ghi nhớ ▸',kind:'go',on:finish}]);
+    } else {
+      talk(`${rows} thếp: 4 × ${rows} = <b>${4*rows}</b>. Gấp tiếp đi!`,`${rows} thếp: 4 nhân ${rows} bằng ${4*rows}. Gấp tiếp đi!`);
+      buttons([{label:'Gấp lên!',kind:'go',on:foldUp}]);
+    }
+  };
+  const finish=()=>{
+    bd.memo('Gấp một số lên 3 lần, ta lấy số đó nhân với 3. Phép nhân là cách viết gọn của cộng nhiều lần cùng một số.');fanfare();
+    talk('Con đọc theo nhé: <b>Gấp lên mấy lần thì nhân với mấy.</b> Nhưng cẩn thận: GẤP khác với THÊM đấy! Sang màn sau xem khác nhau chỗ nào.',
+         'Con đọc theo nhé: gấp lên mấy lần thì nhân với mấy. Nhưng cẩn thận: gấp khác với thêm đấy! Sang màn sau xem khác nhau chỗ nào.');
+    buttons([{label:'GẤP khác THÊM ▸',kind:'go',on:next}]);
+  };
+  buttons([{label:'Gấp lên!',kind:'go',on:foldUp}]);
+}
+
+function gCompare(){
+  const alive=start();
+  const svg=newSvg(290);
+  el('line',{x1:280,y1:30,x2:280,y2:250,stroke:'#c8dbe8','stroke-width':3,'stroke-dasharray':'8 8'},svg);
+  txt(svg,145,36,'THÊM 3 viên',{'font-size':21,fill:COL.wide});
+  txt(svg,420,36,'GẤP 3 lần',{'font-size':21,fill:COL.berry});
+  el('line',{x1:40,y1:250,x2:250,y2:250,stroke:COL.soft,'stroke-width':3},svg);
+  el('line',{x1:310,y1:250,x2:520,y2:250,stroke:COL.soft,'stroke-width':3},svg);
+  const lx=i=>80+i*36, rxx=i=>350+i*36, ry=j=>232-j*32;
+  for(let i=0;i<4;i++){candy(svg,lx(i),ry(0),CANDY_COLS[0]);candy(svg,rxx(i),ry(0),CANDY_COLS[0]);}
+  const lT=txt(svg,145,80,'4',{'font-size':34,fill:COL.wide});
+  const rT=txt(svg,420,80,'4',{'font-size':34,fill:COL.berry});
+  const bd=board();
+  bd.add('Hai bên đều bắt đầu có 4 viên');
+  let dl=false,dr=false;
+  const maybe=()=>{
+    if(dl&&dr){
+      bd.add('Thêm 3: 4 <span class="W">+ 3</span> = 7 · Gấp 3 lần: 4 <span class="key">× 3</span> = 12');
+      bd.memo('Nhiều hơn mấy thì CỘNG mấy. Gấp mấy lần thì NHÂN mấy. Đọc đề thấy chữ “gấp” là nghĩ ngay đến phép nhân!');
+      fanfare();
+      talk('Khác nhau chưa kìa: <b>thêm 3</b> chỉ được 7 viên, còn <b>gấp 3 lần</b> được hẳn 12 viên! Thêm là <b>cộng vài viên lẻ</b>, gấp là <b>chồng cả thếp</b>. Đề bài có chữ <b class="key">gấp</b> là phải nhân đấy!',
+           'Khác nhau chưa kìa: thêm 3 chỉ được 7 viên, còn gấp 3 lần được hẳn 12 viên! Thêm là cộng vài viên lẻ, gấp là chồng cả thếp. Đề bài có chữ gấp là phải nhân đấy!');
+      buttons([{label:'Câu đố ▸',kind:'go',on:next}]);
+    } else lockButtons(false);
+  };
+  talk('Hai bạn cùng có <b>4 viên kẹo</b>. Bạn trái được <b>THÊM 3 viên</b>. Bạn phải được <b>GẤP 3 LẦN</b>. Ai nhiều kẹo hơn? Bấm từng nút xem!',
+       'Hai bạn cùng có 4 viên kẹo. Bạn trái được thêm 3 viên. Bạn phải được gấp 3 lần. Ai nhiều kẹo hơn? Bấm từng nút xem!');
+  buttons([
+    {label:'Thêm 3 viên (trái)',on:async()=>{
+      if(dl)return;lockButtons(true);
+      const cs=[];for(let i=0;i<3;i++)cs.push(candy(svg,145,-16,CANDY_COLS[3]));
+      await Promise.all(cs.map((c,i)=>wait(i*140).then(()=>c.fly(lx(i),ry(1),700))));
+      if(!alive())return;dl=true;lT.textContent='4 + 3 = 7';popEl(lT);tone(760,.12);
+      talk('Bên trái: rơi thêm đúng <b>3 viên lẻ</b>. 4 + 3 = <b>7 viên</b>.','Bên trái: rơi thêm đúng 3 viên lẻ. 4 cộng 3 bằng 7 viên.');
+      maybe();
+    }},
+    {label:'Gấp 3 lần (phải)',on:async()=>{
+      if(dr)return;lockButtons(true);
+      for(let j=1;j<3;j++){
+        const cs=[];for(let i=0;i<4;i++)cs.push(candy(svg,rxx(i),ry(j-1),CANDY_COLS[j]));
+        await Promise.all(cs.map((c,i)=>wait(i*90).then(()=>c.fly(rxx(i),ry(j),620))));
+        if(!alive())return;tone(700+j*120,.12);
+      }
+      dr=true;rT.textContent='4 × 3 = 12';popEl(rT);
+      talk('Bên phải: chồng lên thành <b>3 thếp nguyên</b>, thếp nào cũng 4 viên. 4 × 3 = <b>12 viên</b>.','Bên phải: chồng lên thành 3 thếp nguyên, thếp nào cũng 4 viên. 4 nhân 3 bằng 12 viên.');
+      maybe();
+    }}
+  ]);
+}
+
+function candyRowsDraw(n,per){return svg=>{gridPaper(svg,200);for(let j=0;j<n;j++)for(let i=0;i<per;i++)candy(svg,200+i*34,160-j*32,CANDY_COLS[j%CANDY_COLS.length]);return{};};}
+function gQuiz(){
+  quizScreen([
+    {draw:candyRowsDraw(1,5),h:200,q:'Em có 5 viên bi. Anh có <b>gấp 4 lần</b> em. Anh có mấy viên bi?',qv:'Câu một. Em có 5 viên bi. Anh có gấp 4 lần em. Anh có mấy viên bi?',
+     board:['Anh có: 5 <span class="key">× 4</span> = <span class="key">20</span> viên bi'],
+     opts:[
+      {label:'9 viên',fb:'9 là <b>5 + 4</b>, tức “nhiều hơn 4 viên”. Nhưng đề nói <b>GẤP 4 lần</b> — phải chồng 4 thếp: 5 × 4!',fbv:'Chín là 5 cộng 4, tức nhiều hơn 4 viên. Nhưng đề nói gấp 4 lần — phải chồng 4 thếp: 5 nhân 4!'},
+      {label:'20 viên',ok:true,fb:'Chuẩn! Gấp 4 lần là 4 thếp, mỗi thếp 5 viên: 5 × 4 = <b class="key">20</b>.',fbv:'Chuẩn! Gấp 4 lần là 4 thếp, mỗi thếp 5 viên: 5 nhân 4 bằng 20.'},
+      {label:'45 viên',fb:'Con ghép số 4 với số 5 thành 45 rồi! Gấp 4 lần là phép <b>nhân</b>: 5 × 4.',fbv:'Con ghép số 4 với số 5 thành 45 rồi! Gấp 4 lần là phép nhân: 5 nhân 4.'}]},
+    {draw:candyRowsDraw(1,5),h:200,q:'Vẫn em có 5 viên bi. Chị có <b>nhiều hơn</b> em 4 viên. Chị có mấy viên?',qv:'Câu hai. Vẫn em có 5 viên bi. Chị có nhiều hơn em 4 viên. Chị có mấy viên?',
+     board:['Chị có: 5 <span class="W">+ 4</span> = <span class="key">9</span> viên bi'],
+     opts:[
+      {label:'20 viên',fb:'20 là <b>gấp 4 lần</b> cơ. Đề này chỉ nói <b>nhiều hơn 4 viên</b> — thêm 4 viên lẻ thôi: 5 + 4.',fbv:'Hai mươi là gấp 4 lần cơ. Đề này chỉ nói nhiều hơn 4 viên — thêm 4 viên lẻ thôi: 5 cộng 4.'},
+      {label:'9 viên',ok:true,fb:'Đúng rồi! “Nhiều hơn 4” là <b>cộng 4</b>: 5 + 4 = <b class="key">9</b>. Con đã phân biệt được GẤP và THÊM!',fbv:'Đúng rồi! Nhiều hơn 4 là cộng 4: 5 cộng 4 bằng 9. Con đã phân biệt được gấp và thêm!'},
+      {label:'1 viên',fb:'Con lấy 5 − 4 rồi. “Nhiều hơn” nghĩa là chị được <b>thêm vào</b>, phải cộng chứ!',fbv:'Con lấy 5 trừ 4 rồi. Nhiều hơn nghĩa là chị được thêm vào, phải cộng chứ!'}]},
+    {draw:candyRowsDraw(3,3),h:200,q:'Can nhỏ đựng 3 lít. Thùng to đựng <b>gấp 5 lần</b> can nhỏ. Thùng to đựng mấy lít?',qv:'Câu ba. Can nhỏ đựng 3 lít. Thùng to đựng gấp 5 lần can nhỏ. Thùng to đựng mấy lít?',
+     board:['Thùng to: 3 <span class="key">× 5</span> = <span class="key">15</span> lít'],
+     opts:[
+      {label:'8 lít',fb:'8 là 3 + 5, tức “nhiều hơn 5 lít”. Chữ <b>gấp</b> trong đề là hiệu lệnh của phép <b>nhân</b>!',fbv:'Tám là 3 cộng 5, tức nhiều hơn 5 lít. Chữ gấp trong đề là hiệu lệnh của phép nhân!'},
+      {label:'15 lít',ok:true,fb:'Giỏi quá! Gấp 5 lần = đổ 5 can: 3 × 5 = <b class="key">15 lít</b>.',fbv:'Giỏi quá! Gấp 5 lần là đổ 5 can: 3 nhân 5 bằng 15 lít.'},
+      {label:'35 lít',fb:'Con ghép 3 với 5 thành 35 rồi! Phải <b>nhân</b>: 3 × 5 = 15.',fbv:'Con ghép 3 với 5 thành 35 rồi! Phải nhân: 3 nhân 5 bằng 15.'}]}
+  ],()=>{setDone(WORLDS.gap.key);next();});
+}
+function gDone(){
+  start();
+  stage.innerHTML=`<div class="done">
+    <svg viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>
+      <g stroke="${COL.ink}" stroke-width="2">
+        <circle cx="42" cy="78" r="7" fill="#e8475f"/><circle cx="60" cy="78" r="7" fill="#e8475f"/><circle cx="78" cy="78" r="7" fill="#e8475f"/>
+        <circle cx="42" cy="60" r="7" fill="#2f7fd8"/><circle cx="60" cy="60" r="7" fill="#2f7fd8"/><circle cx="78" cy="60" r="7" fill="#2f7fd8"/>
+        <circle cx="42" cy="42" r="7" fill="#4f9a45"/><circle cx="60" cy="42" r="7" fill="#4f9a45"/><circle cx="78" cy="42" r="7" fill="#4f9a45"/>
+      </g>
+    </svg>
+    <h2>Huy hiệu Gấp!</h2>
+    <div class="nb">${noteCards(NOTES.gap,true)}</div>
+  </div>`;
+  bindNotes();fanfare();
+  talk('Con đã mở khóa <b>Huy hiệu Gấp</b>! Nhớ nhé: gấp mấy lần thì nhân mấy, còn nhiều hơn mấy thì cộng mấy.',
+       'Con đã mở khóa huy hiệu Gấp! Nhớ nhé: gấp mấy lần thì nhân mấy, còn nhiều hơn mấy thì cộng mấy.');
+  buttons([{label:'Chơi lại',on:()=>go('gap')},{label:'Sang Chia Kẹo ▸',kind:'go',on:()=>go('chia')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
+}
+WORLDS.gap.screens=[gFold,gCompare,gQuiz,gDone];
+
+/* ================================================================
+   THẾ GIỚI CHIA KẸO — chia hết, chia có dư
+   ================================================================ */
+function shareScreen(total,isRemain){
+  return function(){
+    const alive=start();
+    const svg=newSvg(300);
+    const plateX=[130,285,440];
+    plateX.forEach((x,i)=>{
+      el('ellipse',{cx:x,cy:262,rx:62,ry:17,fill:'#fff',stroke:COL.ink,'stroke-width':3},svg);
+      txt(svg,x,296,'bạn '+(i+1),{'font-size':15,fill:COL.soft});
+    });
+    el('rect',{x:34,y:28,width:244,height:66,rx:14,fill:'#fdf1d7',stroke:COL.ink,'stroke-width':3},svg);
+    const pileT=txt(svg,470,56,total+' viên',{'font-size':26,fill:COL.berry});
+    txt(svg,470,82,'trong túi',{'font-size':15,fill:COL.soft});
+    const eachT=txt(svg,470,130,'mỗi bạn: 0',{'font-size':19,fill:COL.wide});
+    const pile=[];
+    for(let i=0;i<total;i++)pile.push(candy(svg,56+(i%8)*28,50+Math.floor(i/8)*28,CANDY_COLS[i%CANDY_COLS.length]));
+    const plateN=[0,0,0];let left=total,round=0;
+    const bd=board();
+    const spotOn=(p,n)=>({x:plateX[p]-28+(n%3)*28,y:250-Math.floor(n/3)*24});
+    if(!isRemain)
+      talk(`Trong túi có <b>${total} viên kẹo</b>, chia đều cho <b>3 bạn</b>. Chia kiểu công bằng nhất: mỗi lượt phát cho <b>mỗi bạn 1 viên</b>. Bấm <b>Chia một lượt</b>!`,
+           `Trong túi có ${total} viên kẹo, chia đều cho 3 bạn. Chia kiểu công bằng nhất: mỗi lượt phát cho mỗi bạn 1 viên. Bấm chia một lượt!`);
+    else
+      talk(`Lần này túi có <b>${total} viên</b>, vẫn chia cho <b>3 bạn</b>. ${total} có chia đều được không nhỉ? Chia thử xem!`,
+           `Lần này túi có ${total} viên, vẫn chia cho 3 bạn. ${total} có chia đều được không nhỉ? Chia thử xem!`);
+    const deal=async()=>{
+      lockButtons(true);round++;
+      for(let p=0;p<3;p++){
+        const c=pile.pop();left--;
+        const s=spotOn(p,plateN[p]);
+        await c.fly(s.x,s.y,480);if(!alive())return;plateN[p]++;tone(620+p*110,.09);
+      }
+      pileT.textContent=left+' viên';popEl(pileT);
+      eachT.textContent='mỗi bạn: '+plateN[0];popEl(eachT);
+      if(left>=3){
+        talk(`Lượt ${round}: mỗi bạn thêm 1 viên, ai cũng có <b>${plateN[0]} viên</b>. Túi còn ${left} viên — còn đủ chia tiếp!`,
+             `Lượt ${round}: mỗi bạn thêm 1 viên, ai cũng có ${plateN[0]} viên. Túi còn ${left} viên — còn đủ chia tiếp!`);
+        buttons([{label:'Chia một lượt nữa',kind:'go',on:deal}]);lockButtons(false);
+      } else if(left===0){
+        ting();fanfare();
+        bd.add(`${total} : 3 = <span class="key">${plateN[0]}</span>`);
+        bd.add('Túi hết sạch → <span class="key">CHIA HẾT</span>');
+        bd.memo(`${total} viên chia đều 3 bạn, mỗi bạn ${plateN[0]} viên, không thừa viên nào: ${total} : 3 = ${plateN[0]}. Đó là phép chia hết.`);
+        talk(`Túi <b>hết sạch</b>, ai cũng đúng <b>${plateN[0]} viên</b>, không thừa viên nào. Đó là <b class="key">CHIA HẾT</b>: ${total} : 3 = ${plateN[0]}.`,
+             `Túi hết sạch, ai cũng đúng ${plateN[0]} viên, không thừa viên nào. Đó là chia hết: ${total} chia 3 bằng ${plateN[0]}.`);
+        buttons([{label:isRemain?'Câu đố ▸':'Túi kẹo mới ▸',kind:'go',on:next}]);
+      } else {
+        boop();
+        talk(`Túi còn <b>${left} viên</b> mà có tận 3 bạn — phát nữa thì có bạn được, bạn không. <b>Bất công!</b> Thử bấm chia xem sao.`,
+             `Túi còn ${left} viên mà có tận 3 bạn — phát nữa thì có bạn được, bạn không. Bất công! Thử bấm chia xem sao.`);
+        buttons([{label:'Cứ thử chia lượt nữa',kind:'go',on:async()=>{
+          lockButtons(true);
+          const moves=pile.map((c,i)=>({c,x0:c.x,y0:c.y,p:i}));
+          for(const m of moves){await m.c.fly(plateX[m.p]-28,180,420);if(!alive())return;}
+          boop();await wait(400);if(!alive())return;
+          for(const m of moves){await m.c.fly(m.x0,m.y0,420);if(!alive())return;}
+          bd.add(`${total} : 3 = 4 <span class="key">(dư ${left})</span>`);
+          bd.add(`số dư ${left} < số chia 3`);
+          bd.memo(`${total} : 3 = 4 (dư ${left}). Số dư luôn bé hơn số chia — vì nếu còn đủ ${3} viên thì lại chia thêm được một lượt nữa.`);
+          talk(`Thấy chưa: chỉ có ${left} viên, bạn thứ ba đành chịu, nên kẹo phải <b>quay về túi</b>. ${left} viên thừa ra gọi là <b class="key">SỐ DƯ</b>: ${total} : 3 = 4 (dư ${left}). Số dư luôn <b>bé hơn 3</b>, vì còn đủ 3 viên là chia được tiếp!`,
+               `Thấy chưa: chỉ có ${left} viên, bạn thứ ba đành chịu, nên kẹo phải quay về túi. ${left} viên thừa ra gọi là số dư: ${total} chia 3 bằng 4, dư ${left}. Số dư luôn bé hơn 3, vì còn đủ 3 viên là chia được tiếp!`);
+          buttons([{label:'Câu đố ▸',kind:'go',on:next}]);
+        }}]);
+      }
+    };
+    buttons([{label:'Chia một lượt',kind:'go',on:deal}]);
+  };
+}
+function dQuiz(){
+  quizScreen([
+    {draw:candyRowsDraw(2,6),h:200,q:'<b>17 : 5</b> bằng bao nhiêu?',qv:'Câu một. 17 chia 5 bằng bao nhiêu?',
+     board:['17 : 5 = <span class="key">3 (dư 2)</span>','5 × 3 = 15, còn thừa 2'],
+     opts:[
+      {label:'3 (dư 2)',ok:true,fb:'Đúng! Mỗi bạn 3 viên là phát hết 15, túi còn thừa <b>2</b> — mà 2 < 5 nên không chia được nữa.',fbv:'Đúng! Mỗi bạn 3 viên là phát hết 15, túi còn thừa 2 — mà 2 bé hơn 5 nên không chia được nữa.'},
+      {label:'2 (dư 7)',fb:'Dư 7 mà số chia là 5 thì vẫn còn đủ cho mỗi bạn 1 viên nữa! <b>Số dư phải bé hơn số chia.</b>',fbv:'Dư 7 mà số chia là 5 thì vẫn còn đủ cho mỗi bạn 1 viên nữa! Số dư phải bé hơn số chia.'},
+      {label:'3 (dư 5)',fb:'Dư 5 bằng đúng số chia — thế thì phát thêm được một lượt nữa chứ! Phát xong mới còn <b>dư 2</b>.',fbv:'Dư 5 bằng đúng số chia — thế thì phát thêm được một lượt nữa chứ! Phát xong mới còn dư 2.'}]},
+    {draw:candyRowsDraw(4,5),h:200,q:'<b>20 : 4</b> là phép chia hết hay có dư?',qv:'Câu hai. 20 chia 4 là phép chia hết hay có dư?',
+     board:['20 : 4 = <span class="key">5</span>, không thừa viên nào → chia hết'],
+     opts:[
+      {label:'Chia hết, bằng 5',ok:true,fb:'Chuẩn! 4 × 5 = 20 vừa khít, túi hết sạch: <b>chia hết</b>.',fbv:'Chuẩn! 4 nhân 5 bằng 20 vừa khít, túi hết sạch: chia hết.'},
+      {label:'Có dư, dư 4',fb:'Nếu còn thừa 4 viên mà chia cho 4 bạn thì mỗi bạn thêm 1 viên nữa chứ! 20 : 4 = 5, hết sạch.',fbv:'Nếu còn thừa 4 viên mà chia cho 4 bạn thì mỗi bạn thêm 1 viên nữa chứ! 20 chia 4 bằng 5, hết sạch.'},
+      {label:'Có dư, dư 2',fb:'Thử nhẩm: 4 × 5 = 20, vừa đúng 20, chẳng thừa viên nào. Đây là <b>chia hết</b>.',fbv:'Thử nhẩm: 4 nhân 5 bằng 20, vừa đúng 20, chẳng thừa viên nào. Đây là chia hết.'}]},
+    {draw:candyRowsDraw(1,4),h:200,q:'Chia kẹo cho <b>5 bạn</b>. Số dư <b>lớn nhất</b> có thể là mấy?',qv:'Câu ba. Chia kẹo cho 5 bạn. Số dư lớn nhất có thể là mấy?',
+     board:['Chia cho 5 → số dư lớn nhất là <span class="key">4</span>','(dư 5 là lại chia được một lượt nữa)'],
+     opts:[
+      {label:'5',fb:'Dư 5 mà có 5 bạn thì mỗi bạn thêm 1 viên — tức là <b>vẫn chia được</b>, đâu còn là dư nữa!',fbv:'Dư 5 mà có 5 bạn thì mỗi bạn thêm 1 viên — tức là vẫn chia được, đâu còn là dư nữa!'},
+      {label:'4',ok:true,fb:'Giỏi lắm! Còn 4 viên thì 5 bạn không đủ phát, đành để dư. <b>Số dư lớn nhất = số chia − 1</b>.',fbv:'Giỏi lắm! Còn 4 viên thì 5 bạn không đủ phát, đành để dư. Số dư lớn nhất bằng số chia trừ 1.'},
+      {label:'1',fb:'Dư 1 cũng được, nhưng dư 2, 3, 4 vẫn được mà! Chỉ cần <b>bé hơn 5</b> là không chia tiếp được nữa.',fbv:'Dư 1 cũng được, nhưng dư 2, 3, 4 vẫn được mà! Chỉ cần bé hơn 5 là không chia tiếp được nữa.'}]}
+  ],()=>{setDone(WORLDS.chia.key);next();});
+}
+function dDone(){
+  start();
+  stage.innerHTML=`<div class="done">
+    <svg viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>
+      <ellipse cx="60" cy="74" rx="30" ry="11" fill="#fff" stroke="${COL.ink}" stroke-width="3"/>
+      <circle cx="50" cy="66" r="6" fill="#e8475f" stroke="${COL.ink}" stroke-width="2"/>
+      <circle cx="66" cy="66" r="6" fill="#2f7fd8" stroke="${COL.ink}" stroke-width="2"/>
+      <circle cx="58" cy="56" r="6" fill="#4f9a45" stroke="${COL.ink}" stroke-width="2"/>
+      <circle cx="60" cy="30" r="6" fill="#f08a24" stroke="${COL.ink}" stroke-width="2"/>
+      <path d="M60 38 V48" stroke="${COL.soft}" stroke-width="2.5" stroke-dasharray="3 3"/>
+    </svg>
+    <h2>Huy hiệu Chia Kẹo!</h2>
+    <div class="nb">${noteCards(NOTES.chia,true)}</div>
+  </div>`;
+  bindNotes();fanfare();
+  talk('Con đã mở khóa <b>Huy hiệu Chia Kẹo</b>! Nhớ nhé: chia hết là túi hết sạch, còn thừa thì gọi là số dư — và số dư luôn bé hơn số chia.',
+       'Con đã mở khóa huy hiệu Chia Kẹo! Nhớ nhé: chia hết là túi hết sạch, còn thừa thì gọi là số dư — và số dư luôn bé hơn số chia.');
+  buttons([{label:'Chơi lại',on:()=>go('chia')},{label:'Mở Sổ công thức',kind:'go',on:()=>go('note')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
+}
+WORLDS.chia.screens=[shareScreen(12,false),shareScreen(14,true),dQuiz,dDone];
 
 go(null);
 </script>
