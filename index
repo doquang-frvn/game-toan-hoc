@@ -1,0 +1,548 @@
+<title>Hộp Đồ Chơi Toán</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap">
+<style>
+/* Hộp đồ chơi: viền mực dày + bóng lệch như đồ chơi nhựa. Một cột: thanh trên, sân khấu hình, lời dẫn, nút bấm to. */
+:root{
+  --sky:#e6f3fb; --ink:#1d2b3a; --ink-soft:#4a5b6c; --card:#ffffff; --paper:#fffaf0;
+  --long:#f08a24; --wide:#2f7fd8; --sun:#ffd23f; --berry:#e8475f; --leaf:#4f9a45; --fence:#8a5a33;
+  --display:'Baloo 2','Nunito',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+html,body{background:var(--sky);color:var(--ink)}
+body{font-family:var(--body);font-weight:700;-webkit-tap-highlight-color:transparent}
+.app{max-width:920px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 28px;display:flex;flex-direction:column;gap:12px}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.top h1{font-family:var(--display);font-size:clamp(22px,4vw,30px);margin:0;line-height:1;flex:1 1 auto;min-width:0}
+.top h1 small{display:block;font-family:var(--body);font-size:13px;color:var(--ink-soft);font-weight:700;margin-top:4px;letter-spacing:.02em}
+.chip{font-family:var(--display);font-weight:700;font-size:16px;border:3px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;box-shadow:0 3px 0 var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.chip:focus-visible,.btn:focus-visible,.tile:focus-visible{outline:4px solid var(--wide);outline-offset:3px}
+.chip.off{background:#e9eef2;color:var(--ink-soft)}
+.dots{display:flex;gap:6px;width:100%}
+.dots i{flex:1;height:8px;border-radius:8px;background:#c8dbe8}
+.dots i.on{background:var(--long)}
+.dots i.now{background:var(--berry)}
+.stage{background:var(--card);border:3px solid var(--ink);border-radius:22px;box-shadow:0 5px 0 var(--ink);padding:8px;overflow:hidden}
+svg.scene{display:block;width:100%;height:auto;max-height:60vh;margin:0 auto}
+svg text{font-family:var(--display);font-weight:700}
+.caption{background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:14px 18px;font-size:clamp(18px,2.7vw,23px);line-height:1.45;min-height:3.2em}
+.caption b{font-weight:800}
+.L{color:var(--long);font-weight:800}
+.W{color:var(--wide);font-weight:800}
+.key{color:var(--berry);font-weight:800}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:var(--display);font-weight:800;font-size:clamp(18px,2.6vw,22px);color:var(--ink);padding:10px 22px;border-radius:999px;border:3px solid var(--ink);background:var(--card);box-shadow:0 4px 0 var(--ink);cursor:pointer;line-height:1.2}
+.btn.go{background:var(--sun)}
+.btn.ghost{background:#eef3f6}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn[disabled]{opacity:.45;cursor:default}
+.voicenote{font-size:14px;color:var(--ink-soft);font-weight:700}
+
+/* Bản đồ */
+.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:8px}
+.tile{position:relative;text-align:left;border:3px solid var(--ink);border-radius:18px;padding:14px;background:var(--paper);box-shadow:0 4px 0 var(--ink);cursor:pointer;display:flex;gap:12px;align-items:center;font:inherit;color:var(--ink)}
+.tile svg{width:64px;height:64px;flex:none}
+.tile h3{font-family:var(--display);font-size:22px;margin:0;line-height:1.1}
+.tile p{margin:4px 0 0;font-size:15px;color:var(--ink-soft)}
+.tile.lock{background:#eef2f5;cursor:default;box-shadow:0 4px 0 #9aa9b6;border-color:#9aa9b6}
+.tile.lock h3,.tile.lock p{color:#7a8a98}
+.tag{position:absolute;top:-11px;right:12px;font-family:var(--display);font-size:13px;padding:2px 10px;border-radius:999px;border:2px solid var(--ink);background:var(--sun)}
+.tile.lock .tag{background:#fff;border-color:#9aa9b6;color:#7a8a98}
+.tile.done .tag{background:var(--leaf);color:#fff}
+.hello{font-family:var(--display);font-size:clamp(22px,3.6vw,28px);margin:6px 8px 0;line-height:1.2}
+
+/* Giải mã tên */
+.decode{display:flex;flex-direction:column;align-items:center;gap:18px;padding:18px 8px 22px}
+.word{display:flex;gap:.18em;font-family:var(--display);font-weight:800;font-size:clamp(56px,13vw,110px);line-height:1;transition:gap .6s ease}
+.word.split{gap:1em}
+.syl{display:inline-block;padding:.05em .25em;border-radius:.2em;transition:background .5s,transform .6s}
+.word.split .syl{background:var(--sun);border:4px solid var(--ink);transform:rotate(-3deg)}
+.word.split .syl+.syl{background:#cfe4fb;transform:rotate(3deg)}
+.means{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;max-width:720px}
+.mean{display:flex;gap:12px;align-items:center;border:3px solid var(--ink);border-radius:16px;padding:12px;background:var(--paper);font-size:clamp(17px,2.4vw,21px);transition:opacity .5s,transform .5s;min-width:0}
+.mean.off,.sum.off{opacity:0;transform:translateY(10px)}
+.mean svg{width:64px;height:64px;flex:none}
+.mean small{display:block;font-size:15px;color:var(--ink-soft);margin-top:2px}
+.sum{font-family:var(--display);font-size:clamp(20px,3vw,26px);text-align:center;background:var(--sun);border:3px solid var(--ink);border-radius:16px;padding:10px 18px;transition:opacity .5s,transform .5s;max-width:720px}
+.draw{stroke-dasharray:100;animation:draw 3s linear infinite}
+@keyframes draw{0%{stroke-dashoffset:100}70%,100%{stroke-dashoffset:0}}
+.pop{animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.blink{animation:blink .7s ease-in-out 4}
+@keyframes blink{50%{opacity:.15}}
+svg .pop,svg .blink{transform-box:fill-box;transform-origin:center}
+.hit{cursor:pointer}
+.hit:focus{outline:none}
+.hit:focus-visible+line{stroke:var(--wide)}
+
+/* Kết thúc */
+.done{display:flex;flex-direction:column;align-items:center;gap:14px;padding:14px 8px 20px;text-align:center}
+.done h2{font-family:var(--display);font-size:clamp(28px,5vw,40px);margin:0}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;max-width:720px;text-align:left}
+.card{border:3px solid var(--ink);border-radius:16px;padding:14px;background:var(--paper);font-size:18px;min-width:0}
+.card h4{font-family:var(--display);font-size:22px;margin:0 0 4px}
+
+@media (max-width:560px){
+  .map,.means,.cards{grid-template-columns:1fr}
+  .stage{padding:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="app">
+  <header class="top">
+    <button class="chip" id="home" hidden>← Bản đồ</button>
+    <h1 id="title">Hộp Đồ Chơi Toán<small>Toán lớp 3 bằng hình và chuyển động</small></h1>
+    <button class="chip" id="replay" title="Nghe lại câu vừa đọc">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      Nghe lại
+    </button>
+    <button class="chip" id="voice">Đọc to: Bật</button>
+    <div class="dots" id="dots" hidden></div>
+  </header>
+  <main class="stage" id="stage"></main>
+  <div class="caption" id="caption" aria-live="polite"></div>
+  <div class="btns" id="btns"></div>
+  <div class="voicenote" id="vnote"></div>
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const $=s=>document.querySelector(s);
+const stage=$('#stage'), cap=$('#caption'), btns=$('#btns');
+const COL={long:'#f08a24',wide:'#2f7fd8',fence:'#8a5a33',post:'#5e3a1d',ink:'#1d2b3a',soft:'#4a5b6c',sun:'#ffd23f',berry:'#e8475f',leaf:'#4f9a45',grassA:'#9bd585',grassB:'#8ccb75',tape:'#ffe27a'};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S={i:-1,voice:true,guess:undefined};
+let run=0;
+
+/* ---------- tiện ích hoạt hình ---------- */
+const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const wait=ms=>new Promise(r=>setTimeout(r,reduce?30:ms));
+function tween(ms,fn){return new Promise(res=>{if(reduce)ms=60;const t0=performance.now();function f(t){const p=Math.min(1,(t-t0)/ms);fn(ease(p),p);p<1?requestAnimationFrame(f):res();}requestAnimationFrame(f);});}
+function el(tag,attrs={},parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function txt(parent,x,y,s,attrs={}){const t=el('text',Object.assign({x,y,'text-anchor':'middle',fill:COL.ink,'font-size':18},attrs),parent);t.textContent=s;return t;}
+function newSvg(h=330){stage.innerHTML='';const s=el('svg',{viewBox:`0 0 560 ${h}`,class:'scene',role:'img'});stage.appendChild(s);return s;}
+function popEl(e){e.classList.remove('pop');void e.getBoundingClientRect();e.classList.add('pop');}
+
+/* ---------- âm thanh ---------- */
+let ac;
+function tone(f=880,d=.14,type='sine',v=.14){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch(e){}}
+const ting=()=>{tone(1047,.15);setTimeout(()=>tone(1568,.22),90);};
+const click=()=>tone(660,.07,'square',.06);
+const boop=()=>{tone(330,.2,'triangle',.14);setTimeout(()=>tone(262,.25,'triangle',.12),150);};
+const fanfare=()=>[523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,.25,'triangle',.15),i*130));
+
+/* ---------- giọng đọc tiếng Việt ---------- */
+let viVoice=null,lastSay='';
+function pickVoice(){
+  if(!('speechSynthesis' in window))return showVoiceNote();
+  const vs=speechSynthesis.getVoices().filter(v=>/^vi/i.test(v.lang));
+  viVoice=vs.find(v=>/natural|online|hoaimy|namminh/i.test(v.name))||vs.find(v=>/google/i.test(v.name))||vs[0]||null;
+  showVoiceNote();
+}
+function showVoiceNote(){
+  const n=$('#vnote');
+  if(viVoice) n.textContent='';
+  else n.textContent='Máy này chưa có giọng đọc tiếng Việt nên app chỉ hiện chữ. Trên máy tính Windows, mở bằng trình duyệt Edge sẽ có giọng đọc; điện thoại Android và iPhone thường có sẵn.';
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;setTimeout(pickVoice,800);}else showVoiceNote();
+function say(t){
+  lastSay=t;
+  if(!S.voice||!viVoice)return;
+  speechSynthesis.cancel();
+  setTimeout(()=>{const u=new SpeechSynthesisUtterance(t);u.voice=viVoice;u.lang=viVoice.lang;u.rate=.9;u.pitch=1.05;speechSynthesis.speak(u);},60);
+}
+$('#replay').onclick=()=>{const v=S.voice;S.voice=true;say(lastSay);S.voice=v;if(!viVoice)showVoiceNote();};
+$('#voice').onclick=()=>{S.voice=!S.voice;const b=$('#voice');b.textContent='Đọc to: '+(S.voice?'Bật':'Tắt');b.classList.toggle('off',!S.voice);if(!S.voice&&'speechSynthesis' in window)speechSynthesis.cancel();};
+
+/* ---------- khung bài ---------- */
+function talk(html,voice){cap.innerHTML=html;say(voice??cap.textContent);}
+function buttons(list){btns.innerHTML='';list.forEach(b=>{const e=document.createElement('button');e.className='btn '+(b.kind||'');e.innerHTML=b.label;e.onclick=()=>{if(e.disabled)return;b.on(e);};btns.appendChild(e);});}
+function lockButtons(on){btns.querySelectorAll('button').forEach(b=>b.disabled=on);}
+function start(){const tok=++run;if('speechSynthesis' in window)speechSynthesis.cancel();btns.innerHTML='';return()=>tok===run;}
+
+const WORLD=[sDecode,sGuess,sDrive,sHalf,sTriangle,sQuiz,sDone];
+function go(i){
+  S.i=i;
+  const inWorld=i>=0;
+  $('#home').hidden=!inWorld;
+  $('#dots').hidden=!inWorld;
+  $('#title').innerHTML=inWorld?'Thế Giới Hàng Rào<small>Chu vi và nửa chu vi</small>':'Hộp Đồ Chơi Toán<small>Toán lớp 3 bằng hình và chuyển động</small>';
+  if(inWorld){$('#dots').innerHTML=WORLD.map((_,k)=>`<i class="${k<i?'on':k===i?'now':''}"></i>`).join('');}
+  window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  (inWorld?WORLD[i]:sHome)();
+}
+const next=()=>go(S.i+1);
+$('#home').onclick=()=>go(-1);
+
+/* ---------- đồ vật dùng chung ---------- */
+function field(svg,ox,oy,Lm,Wm,k,opt={}){
+  const P={A:{x:ox,y:oy},B:{x:ox+Lm*k,y:oy},C:{x:ox+Lm*k,y:oy+Wm*k},D:{x:ox,y:oy+Wm*k}};
+  const defs=el('defs',{},svg);
+  const pat=el('pattern',{id:'grass',x:ox,y:0,width:k,height:k,patternUnits:'userSpaceOnUse'},defs);
+  el('rect',{width:k,height:k,fill:COL.grassA},pat);el('rect',{width:k/2,height:k,fill:COL.grassB},pat);
+  el('rect',{x:ox,y:oy,width:Lm*k,height:Wm*k,fill:opt.fill||'url(#grass)'},svg);
+  if(opt.veg){for(let r=0;r<Wm;r++)for(let c=0;c<Lm;c++){el('circle',{cx:ox+c*k+k/2,cy:oy+r*k+k/2,r:7,fill:'#3f8a3a'},svg);el('circle',{cx:ox+c*k+k/2-3,cy:oy+r*k+k/2-3,r:3,fill:'#7dc56c'},svg);}}
+  el('rect',{x:ox,y:oy,width:Lm*k,height:Wm*k,fill:'none',stroke:COL.fence,'stroke-width':4},svg);
+  const posts=el('g',{fill:COL.post},svg);
+  for(let i=0;i<=Lm;i++){el('circle',{cx:ox+i*k,cy:oy,r:3.2},posts);el('circle',{cx:ox+i*k,cy:oy+Wm*k,r:3.2},posts);}
+  for(let j=1;j<Wm;j++){el('circle',{cx:ox,cy:oy+j*k,r:3.2},posts);el('circle',{cx:ox+Lm*k,cy:oy+j*k,r:3.2},posts);}
+  const lab={
+    top:txt(svg,ox+Lm*k/2,oy-12,Lm+' m',{fill:COL.long,'font-size':20}),
+    bottom:txt(svg,ox+Lm*k/2,oy+Wm*k+26,Lm+' m',{fill:COL.long,'font-size':20}),
+    left:txt(svg,ox-12,oy+Wm*k/2+7,Wm+' m',{fill:COL.wide,'font-size':20,'text-anchor':'end'}),
+    right:txt(svg,ox+Lm*k+12,oy+Wm*k/2+7,Wm+' m',{fill:COL.wide,'font-size':20,'text-anchor':'start'})
+  };
+  if(opt.letters){
+    txt(svg,ox-12,oy-6,'A',{'font-size':15,fill:COL.soft});txt(svg,ox+Lm*k+12,oy-6,'B',{'font-size':15,fill:COL.soft});
+    txt(svg,ox+Lm*k+12,oy+Wm*k+18,'C',{'font-size':15,fill:COL.soft});txt(svg,ox-12,oy+Wm*k+18,'D',{'font-size':15,fill:COL.soft});
+  }
+  return {P,lab};
+}
+function legend(svg,x,y){
+  el('line',{x1:x,y1:y,x2:x+28,y2:y,stroke:COL.long,'stroke-width':8,'stroke-linecap':'round'},svg);
+  txt(svg,x+38,y+6,'chiều dài',{'text-anchor':'start','font-size':16,fill:COL.soft});
+  el('line',{x1:x,y1:y+28,x2:x+28,y2:y+28,stroke:COL.wide,'stroke-width':8,'stroke-linecap':'round'},svg);
+  txt(svg,x+38,y+34,'chiều rộng',{'text-anchor':'start','font-size':16,fill:COL.soft});
+}
+function makeCar(svg){
+  const g=el('g',{},svg);
+  [[-13,-12],[5,-12],[-13,7],[5,7]].forEach(([x,y])=>el('rect',{x,y,width:9,height:5,rx:2,fill:'#222'},g));
+  el('rect',{x:-17,y:-9,width:34,height:18,rx:7,fill:COL.berry,stroke:COL.ink,'stroke-width':2},g);
+  el('rect',{x:3,y:-6.5,width:8,height:13,rx:3,fill:'#cdeeff'},g);
+  el('rect',{x:-12,y:-6,width:11,height:12,rx:3,fill:'#f47b8e'},g);
+  const car={g,x:0,y:0,a:0,put(x,y,a){this.x=x;this.y=y;this.a=a;g.setAttribute('transform',`translate(${x} ${y}) rotate(${a})`);}};
+  return car;
+}
+async function turn(car,ang){
+  let d=((ang-car.a)%360+540)%360-180;
+  if(Math.abs(d)<1){car.put(car.x,car.y,ang);return;}
+  const a0=car.a;await tween(260,t=>car.put(car.x,car.y,a0+d*t));car.a=ang;
+}
+async function drive(svg,car,from,to,meters,color,opt={}){
+  const ang=Math.atan2(to.y-from.y,to.x-from.x)*180/Math.PI;
+  car.put(from.x,from.y,car.a);
+  await turn(car,ang);
+  const line=el('line',{x1:from.x,y1:from.y,x2:from.x,y2:from.y,stroke:color,'stroke-width':opt.w||8,'stroke-linecap':'round','stroke-dasharray':opt.dash||'none'});
+  svg.insertBefore(line,car.g);
+  await tween(Math.max(500,meters*300),t=>{const x=lerp(from.x,to.x,t),y=lerp(from.y,to.y,t);line.setAttribute('x2',x);line.setAttribute('y2',y);car.put(x,y,ang);if(opt.onT)opt.onT(t);});
+  return line;
+}
+/* xoay và đặt một đoạn thẳng nằm ngang, giữ nguyên độ dài */
+function morph(line,tx,ty,ms=900){
+  const x1=+line.getAttribute('x1'),y1=+line.getAttribute('y1'),x2=+line.getAttribute('x2'),y2=+line.getAttribute('y2');
+  const L=Math.hypot(x2-x1,y2-y1),mx=(x1+x2)/2,my=(y1+y2)/2,a0=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+  const d=((0-a0)%360+540)%360-180;
+  return tween(ms,t=>{const a=(a0+d*t)*Math.PI/180,cx=lerp(mx,tx+L/2,t),cy=lerp(my,ty,t);
+    line.setAttribute('x1',cx-Math.cos(a)*L/2);line.setAttribute('y1',cy-Math.sin(a)*L/2);line.setAttribute('x2',cx+Math.cos(a)*L/2);line.setAttribute('y2',cy+Math.sin(a)*L/2);});
+}
+function tape(svg,x,y,meters,k){
+  const g=el('g',{opacity:0},svg);
+  el('rect',{x:x-4,y,width:meters*k+8,height:22,rx:4,fill:COL.tape,stroke:COL.ink,'stroke-width':2},g);
+  for(let i=0;i<=meters;i++){const big=i%5===0;el('line',{x1:x+i*k,y1:y,x2:x+i*k,y2:y+(big?14:8),stroke:COL.ink,'stroke-width':big?2:1.2},g);
+    if(big)txt(g,x+i*k,y+40,i===meters?i+' m':String(i),{'font-size':15,fill:COL.soft});}
+  return g;
+}
+const fadeIn=g=>tween(500,t=>g.setAttribute('opacity',t));
+function flag(svg,x,y){el('line',{x1:x,y1:y,x2:x,y2:y-34,stroke:COL.ink,'stroke-width':3},svg);el('path',{d:`M${x} ${y-34} L${x+22} ${y-27} L${x} ${y-20}Z`,fill:COL.sun,stroke:COL.ink,'stroke-width':2},svg);}
+
+/* ================= BẢN ĐỒ ================= */
+function sHome(){
+  start();
+  let done=false;try{done=localStorage.getItem('hangrao-xong')==='1';}catch(e){}
+  stage.innerHTML=`
+  <p class="hello">Chọn một thế giới để chơi</p>
+  <div class="map">
+    <button class="tile ${done?'done':''}" id="w1">
+      <span class="tag">${done?'Đã xong ★':'Mở rồi'}</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="14" width="48" height="36" fill="${COL.grassA}" stroke="${COL.fence}" stroke-width="4"/><circle r="5" fill="${COL.berry}"><animateMotion dur="4s" repeatCount="indefinite" path="M8 14 H56 V50 H8 Z"/></circle></svg>
+      <div><h3>Hàng Rào</h3><p>Chu vi, nửa chu vi</p></div>
+    </button>
+    <div class="tile lock"><span class="tag">Sắp mở</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24" fill="#eef2f5" stroke="#9aa9b6" stroke-width="4"/><circle cx="32" cy="32" r="3" fill="#9aa9b6"/><line x1="32" y1="32" x2="56" y2="32" stroke="#9aa9b6" stroke-width="3"/></svg>
+      <div><h3>Hình Tròn</h3><p>Tâm, bán kính, đường kính</p></div></div>
+    <div class="tile lock"><span class="tag">Sắp mở</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 24 L32 14 L50 24 L50 46 L32 56 L14 46Z M14 24 L32 34 L50 24 M32 34 V56" fill="#eef2f5" stroke="#9aa9b6" stroke-width="3" stroke-linejoin="round"/></svg>
+      <div><h3>Khối Hộp</h3><p>Hình lập phương, trung điểm</p></div></div>
+    <div class="tile lock"><span class="tag">Sắp mở</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="16" width="40" height="10" rx="3" fill="#9aa9b6"/><rect x="8" y="36" width="24" height="10" rx="3" fill="#c3ced8"/></svg>
+      <div><h3>Thời Gian</h3><p>Bài toán tuổi</p></div></div>
+  </div>`;
+  $('#w1').onclick=()=>go(0);
+  cap.innerHTML='Mỗi thế giới là một hộp đồ chơi. Con kéo, bấm, cho xe chạy để <b class="key">tự nhìn ra</b> ý nghĩa của từng từ toán học.';
+  lastSay='Chọn một thế giới để chơi nhé. Thế giới Hàng Rào đã mở rồi!';
+}
+
+/* ================= 1. GIẢI MÃ TÊN ================= */
+const ORBIT=`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="12" width="40" height="40" rx="3" fill="${COL.grassA}" stroke="${COL.fence}" stroke-width="3"/><circle r="5" fill="${COL.berry}"><animateMotion dur="3s" repeatCount="indefinite" path="M12 12 H52 V52 H12 Z"/></circle></svg>`;
+const FENCE=`<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="28" y="34" width="8" height="15" fill="${COL.fence}"/><circle cx="32" cy="28" r="12" fill="${COL.leaf}"/><rect class="draw" x="7" y="7" width="50" height="50" rx="3" fill="none" stroke="${COL.wide}" stroke-width="4" pathLength="100"/></svg>`;
+function sDecode(){
+  start();
+  stage.innerHTML=`<div class="decode">
+    <div class="word" id="word"><span class="syl">CHU</span><span class="syl">VI</span></div>
+    <div class="means">
+      <div class="mean off" id="m1">${ORBIT}<div><b class="key">CHU</b> = vòng quanh<small>như “chu du”: đi vòng quanh khắp nơi</small></div></div>
+      <div class="mean off" id="m2">${FENCE}<div><b class="key">VI</b> = bao quanh, vây quanh<small>như hàng rào vây quanh khu vườn</small></div></div>
+    </div>
+    <div class="sum off" id="sum">CHU VI = độ dài đường đi <u>vòng quanh</u> một hình</div>
+  </div>`;
+  talk('Hôm nay mình gặp một từ nghe rất lạ: <b class="key">CHU VI</b>. Cái tên này giấu bí mật bên trong đấy! Bấm <b>Tách chữ ra</b> để xem.',
+       'Hôm nay mình gặp một từ nghe rất lạ: chu vi. Cái tên này giấu bí mật bên trong đấy! Bấm tách chữ ra để xem.');
+  buttons([{label:'Tách chữ ra',kind:'go',on:()=>{
+    $('#word').classList.add('split');ting();$('#m1').classList.remove('off');
+    talk('<b class="key">CHU</b> nghĩa là <b>vòng quanh</b>, giống “chu du” là đi vòng quanh khắp nơi. Nhìn chấm đỏ chạy vòng quanh mảnh vườn kìa!',
+         'Chu nghĩa là vòng quanh, giống chu du là đi vòng quanh khắp nơi. Nhìn chấm đỏ chạy vòng quanh mảnh vườn kìa!');
+    buttons([{label:'Còn chữ VI?',kind:'go',on:()=>{
+      ting();$('#m2').classList.remove('off');
+      talk('<b class="key">VI</b> nghĩa là <b>bao quanh, vây quanh</b>, giống hàng rào vây kín cái cây ở giữa.',
+           'Vi nghĩa là bao quanh, vây quanh, giống hàng rào vây kín cái cây ở giữa.');
+      buttons([{label:'Ghép lại',kind:'go',on:()=>{
+        $('#word').classList.remove('split');ting();$('#sum').classList.remove('off');
+        talk('Ghép lại: <b class="key">CHU VI</b> là độ dài con đường đi <b>vòng quanh</b> một hình, sát theo mép của nó.',
+             'Ghép lại: chu vi là độ dài con đường đi vòng quanh một hình, sát theo mép của nó.');
+        buttons([{label:'Đi xem thử ▸',kind:'go',on:next}]);
+      }}]);
+    }}]);
+  }}]);
+}
+
+/* ================= 2. ĐOÁN ================= */
+const FX=202,FY=50,K=26;
+function sGuess(){
+  start();
+  const svg=newSvg(230);const f=field(svg,FX,FY,6,4,K,{letters:true});legend(svg,430,80);
+  const car=makeCar(svg);car.put(f.P.A.x,f.P.A.y,0);
+  talk('Đây là sân bóng: dài <span class="L">6 m</span>, rộng <span class="W">4 m</span>. Mỗi chấm nâu là một cọc rào, hai cọc cách nhau 1 m. Xe đồ chơi chạy <b>một vòng sát mép sân</b> thì đi được bao xa? Con đoán thử!',
+       'Đây là sân bóng: dài sáu mét, rộng bốn mét. Mỗi chấm nâu là một cọc rào, hai cọc cách nhau một mét. Xe đồ chơi chạy một vòng sát mép sân thì đi được bao xa? Con đoán thử!');
+  const pick=v=>{S.guess=v;click();
+    if(v===null)talk('Không sao cả! Mình cho xe chạy thật để cùng tìm ra nhé.','Không sao cả! Mình cho xe chạy thật để cùng tìm ra nhé.');
+    else talk(`Con đoán <b class="key">${v} m</b>. Giờ cho xe chạy thật để kiểm tra nhé!`,`Con đoán ${v} mét. Giờ cho xe chạy thật để kiểm tra nhé!`);
+    buttons([{label:'Cho xe chạy ▸',kind:'go',on:next}]);};
+  buttons([{label:'10 m',on:()=>pick(10)},{label:'20 m',on:()=>pick(20)},{label:'24 m',on:()=>pick(24)},{label:'Con chưa biết',kind:'ghost',on:()=>pick(null)}]);
+}
+
+/* ================= 3. LÁI XE QUANH SÂN ================= */
+function sDrive(){
+  const alive=start();
+  const svg=newSvg(330);const f=field(svg,FX,FY,6,4,K,{letters:true});legend(svg,430,80);
+  const {A,B,C,D}=f.P;
+  txt(svg,100,92,'Xe đã đi',{'font-size':17,fill:COL.soft});
+  const num=txt(svg,100,138,'0 m',{'font-size':44,fill:COL.berry});
+  const car=makeCar(svg);car.put(A.x,A.y,0);
+  const edges=[{a:A,b:B,m:6,c:COL.long,lab:f.lab.top},{a:B,b:C,m:4,c:COL.wide,lab:f.lab.right},{a:C,b:D,m:6,c:COL.long,lab:f.lab.bottom},{a:D,b:A,m:4,c:COL.wide,lab:f.lab.left}];
+  const lines=[];let idx=0,total=0;
+  const says=[
+    ['Cạnh thứ nhất: <span class="L">6 m</span>. Xe đã đi <b>6 m</b>.','Cạnh thứ nhất: sáu mét.'],
+    ['Thêm <span class="W">4 m</span>: 6 + 4 = <b>10 m</b>.','Thêm bốn mét. Sáu cộng bốn bằng mười mét.'],
+    ['Thêm <span class="L">6 m</span>: 10 + 6 = <b>16 m</b>.','Thêm sáu mét. Mười cộng sáu bằng mười sáu mét.'],
+    ['Thêm <span class="W">4 m</span>: 16 + 4 = <b>20 m</b>. Xe về đúng chỗ xuất phát rồi!','Thêm bốn mét. Mười sáu cộng bốn bằng hai mươi mét. Xe về đúng chỗ xuất phát rồi!']];
+  talk('Mỗi lần con bấm <b>Đi tiếp</b>, xe chạy hết một cạnh sân. Con nhìn số mét bên trái nhé!','Mỗi lần con bấm đi tiếp, xe chạy hết một cạnh sân. Con nhìn số mét bên trái nhé!');
+  const step=async()=>{
+    lockButtons(true);
+    const e=edges[idx];const from=total;
+    lines.push(await drive(svg,car,e.a,e.b,e.m,e.c,{onT:t=>{num.textContent=Math.round(from+e.m*t)+' m';}}));
+    if(!alive())return;
+    total+=e.m;num.textContent=total+' m';popEl(e.lab);popEl(num);ting();
+    talk(says[idx][0],says[idx][1]);idx++;
+    if(idx<4){lockButtons(false);return;}
+    await wait(2200);if(!alive())return;
+    talk('Xe vừa đi hết <b>một vòng</b> quanh sân. Độ dài cả vòng đó gọi là <b class="key">CHU VI</b> của sân. Giờ mình tháo hàng rào ra, duỗi thẳng xem nó dài bao nhiêu!',
+         'Xe vừa đi hết một vòng quanh sân. Độ dài cả vòng đó gọi là chu vi của sân. Giờ mình tháo hàng rào ra, duỗi thẳng xem nó dài bao nhiêu!');
+    buttons([{label:'Duỗi thẳng hàng rào ra',kind:'go',on:unfold}]);
+  };
+  const unfold=async()=>{
+    lockButtons(true);
+    const tp=tape(svg,20,262,20,K);await fadeIn(tp);
+    let x=20;
+    for(let i=0;i<4;i++){
+      if(!alive())return;
+      await morph(lines[i],x,255,800);
+      txt(svg,x+edges[i].m*K/2,243,edges[i].m+' m',{'font-size':17,fill:edges[i].c});
+      tone(700+i*120,.12);x+=edges[i].m*K;
+    }
+    if(!alive())return;ting();
+    let cmp='';
+    if(S.guess===20)cmp=' Con đoán đúng ngay từ đầu, giỏi quá!';
+    else if(typeof S.guess==='number')cmp=` Lúc nãy con đoán ${S.guess} m, giờ con đã thấy tận mắt là 20 m.`;
+    talk(`Hàng rào duỗi thẳng thành một sợi dài: <span class="L">6</span> + <span class="W">4</span> + <span class="L">6</span> + <span class="W">4</span> = <b class="key">20 m</b>. Chu vi sân bóng là 20 m.${cmp}`,
+         `Hàng rào duỗi thẳng thành một sợi dài. Sáu cộng bốn cộng sáu cộng bốn bằng hai mươi mét. Chu vi sân bóng là hai mươi mét.${cmp.replace('20 m','hai mươi mét').replace(/(\d+) m/,'$1 mét')}`);
+    buttons([{label:'Thử thách nửa vòng ▸',kind:'go',on:next}]);
+  };
+  buttons([{label:'Đi tiếp ▸',kind:'go',on:step}]);
+}
+
+/* ================= 4. NỬA CHU VI ================= */
+function sHalf(){
+  const alive=start();
+  const svg=newSvg(330);const f=field(svg,FX,FY,6,4,K,{letters:true});
+  const {A,B,C,D}=f.P;flag(svg,C.x+16,C.y+4);
+  const badge=(x,y,n)=>{el('circle',{cx:x,cy:y,r:12,fill:COL.sun,stroke:COL.ink,'stroke-width':2},svg);txt(svg,x,y+6,n,{'font-size':16});};
+  const info=[txt(svg,470,95,'',{'font-size':17}),txt(svg,470,125,'',{'font-size':17})];
+  const car=makeCar(svg);car.put(A.x,A.y,0);
+  const done={1:null,2:null};let trail=null;
+  talk('Thử thách mới: đưa xe từ góc <b>A</b> tới lá cờ ở góc <b>C</b>, nhưng phải đi <b>dọc mép sân</b>. Con chọn đường nào?',
+       'Thử thách mới: đưa xe từ góc A tới lá cờ ở góc C, nhưng phải đi dọc mép sân. Con chọn đường nào?');
+  const reset=()=>{car.put(A.x,A.y,0);if(trail){trail.remove();trail=null;}};
+  const menu=()=>{
+    const list=[];
+    if(!done[1])list.push({label:'Đường 1: sang phải → rồi xuống ↓',on:()=>path(1)});
+    if(!done[2])list.push({label:'Đường 2: xuống ↓ rồi sang phải →',on:()=>path(2)});
+    list.push({label:'Đi thẳng chéo ↘',kind:'ghost',on:diag});
+    if(done[1]&&done[2])list.unshift({label:'So hai đường ▸',kind:'go',on:compare});
+    buttons(list);
+  };
+  const path=async n=>{
+    lockButtons(true);reset();
+    const segs=n===1?[[A,B,6,COL.long],[B,C,4,COL.wide]]:[[A,D,4,COL.wide],[D,C,6,COL.long]];
+    const ls=[];for(const s of segs){ls.push(await drive(svg,car,s[0],s[1],s[2],s[3]));if(!alive())return;tone(800,.1);}
+    done[n]=ls;ting();
+    if(n===1)badge(B.x+16,B.y-16,'1');else badge(D.x-18,D.y+20,'2');
+    info[n-1].textContent=n===1?'Đường 1: 6 + 4 = 10 m':'Đường 2: 4 + 6 = 10 m';popEl(info[n-1]);
+    if(n===1)talk('Đường 1 đi hết <span class="L">một cạnh dài 6 m</span> và <span class="W">một cạnh rộng 4 m</span>: 6 + 4 = <b>10 m</b>.','Đường một đi hết một cạnh dài sáu mét và một cạnh rộng bốn mét. Sáu cộng bốn bằng mười mét.');
+    else talk('Đường 2 đi <span class="W">một cạnh rộng 4 m</span> rồi <span class="L">một cạnh dài 6 m</span>: 4 + 6 = <b>10 m</b>.','Đường hai đi một cạnh rộng bốn mét rồi một cạnh dài sáu mét. Bốn cộng sáu bằng mười mét.');
+    if(done[1]&&done[2]){await wait(1600);if(!alive())return;talk('Ồ! Hai đường đều dài <b>10 m</b>. Mình đặt chúng cạnh nhau để so thử nhé.','Ồ! Hai đường đều dài mười mét. Mình đặt chúng cạnh nhau để so thử nhé.');}
+    else car.put(A.x,A.y,0);
+    menu();
+  };
+  const diag=async()=>{
+    lockButtons(true);reset();
+    trail=await drive(svg,car,A,C,6,COL.berry,{w:4,dash:'6 7'});if(!alive())return;
+    boop();
+    talk('Ơ kìa! Xe chạy <b>cắt ngang bãi cỏ</b> mất rồi. Đường chéo không đi dọc mép sân, nên không dùng để tính chu vi hay nửa chu vi. Con thử đường khác nhé!',
+         'Ơ kìa! Xe chạy cắt ngang bãi cỏ mất rồi. Đường chéo không đi dọc mép sân, nên không dùng để tính chu vi hay nửa chu vi. Con thử đường khác nhé!');
+    await wait(1500);if(!alive())return;reset();if(done[1]&&done[2])car.put(A.x,A.y,0);menu();
+  };
+  const compare=async()=>{
+    lockButtons(true);reset();info.forEach(t=>t.textContent='');
+    const [a1,b1]=done[1],[a2,b2]=done[2];
+    await Promise.all([morph(a1,20,232),morph(a2,20,282)]);if(!alive())return;
+    await Promise.all([morph(b1,20+6*K,232),morph(b2,20+4*K,282)]);if(!alive())return;
+    txt(svg,20+10*K+14,238,'Đường 1',{'text-anchor':'start','font-size':16});txt(svg,20+10*K+14,288,'Đường 2',{'text-anchor':'start','font-size':16});
+    el('line',{x1:20+10*K,y1:214,x2:20+10*K,y2:300,stroke:COL.berry,'stroke-width':2,'stroke-dasharray':'5 5'},svg);
+    el('line',{x1:20,y1:214,x2:20,y2:300,stroke:COL.berry,'stroke-width':2,'stroke-dasharray':'5 5'},svg);
+    ting();
+    talk('Hai đường dài <b>bằng nhau</b>! Đường nào cũng có <span class="L">1 chiều dài</span> + <span class="W">1 chiều rộng</span> = 6 + 4 = 10 m.',
+         'Hai đường dài bằng nhau! Đường nào cũng có một chiều dài cộng một chiều rộng. Sáu cộng bốn bằng mười mét.');
+    buttons([{label:'Nối hai đường lại ▸',kind:'go',on:join}]);
+  };
+  const join=async()=>{
+    lockButtons(true);
+    svg.querySelectorAll('line[stroke-dasharray="5 5"]').forEach(l=>l.remove());
+    svg.querySelectorAll('text').forEach(t=>{if(/^Đường/.test(t.textContent))t.remove();});
+    const [a2,b2]=done[2];
+    await Promise.all([morph(a2,20+10*K,232,700),morph(b2,20+14*K,232,700)]);if(!alive())return;
+    const tp=tape(svg,20,240,20,K);await fadeIn(tp);
+    const br=(x1,x2)=>{el('path',{d:`M${x1+2} 292 V300 H${x2-2} V292`,fill:'none',stroke:COL.berry,'stroke-width':3},svg);txt(svg,(x1+x2)/2,322,'nửa chu vi · 10 m',{'font-size':16,fill:COL.berry});};
+    br(20,20+10*K);br(20+10*K,20+20*K);ting();
+    talk('Nối hai đường lại thì được cả vòng <b>20 m</b>, đúng bằng chu vi! Mỗi đường là một <b class="key">NỬA</b>. Vậy: <b class="key">Nửa chu vi = chiều dài + chiều rộng</b> = 6 + 4 = 10 m.',
+         'Nối hai đường lại thì được cả vòng hai mươi mét, đúng bằng chu vi! Mỗi đường là một nửa. Vậy: nửa chu vi bằng chiều dài cộng chiều rộng. Sáu cộng bốn bằng mười mét.');
+    buttons([{label:'Tiếp ▸',kind:'go',on:next}]);
+  };
+  menu();
+}
+
+/* ================= 5. TAM GIÁC ================= */
+function sTriangle(){
+  const alive=start();
+  const svg=newSvg(330);
+  const P={x:200,y:280},Q={x:360,y:280},R={x:200,y:160};
+  el('path',{d:`M${P.x} ${P.y} L${Q.x} ${Q.y} L${R.x} ${R.y}Z`,fill:COL.grassA},svg);
+  el('path',{d:`M${P.x} ${P.y-16} H${P.x+16} V${P.y}`,fill:'none',stroke:COL.soft,'stroke-width':2},svg);
+  const sides=[{a:P,b:Q,m:4,lx:280,ly:310},{a:Q,b:R,m:5,lx:300,ly:202},{a:R,b:P,m:3,lx:182,ly:226,anchor:'end'}];
+  const sumT=txt(svg,470,150,'',{'font-size':22,fill:COL.berry});
+  txt(svg,470,118,'Con đang cộng',{'font-size':16,fill:COL.soft});
+  sides.forEach((s,i)=>{
+    s.sel=false;
+    s.vis=el('line',{x1:s.a.x,y1:s.a.y,x2:s.b.x,y2:s.b.y,stroke:COL.fence,'stroke-width':5,'stroke-linecap':'round'},svg);
+    s.lab=txt(svg,s.lx,s.ly,s.m+' m',{'font-size':22,'text-anchor':s.anchor||'middle'});
+    s.hit=el('line',{x1:s.a.x,y1:s.a.y,x2:s.b.x,y2:s.b.y,stroke:'#000','stroke-opacity':0,'stroke-width':34,'pointer-events':'stroke',class:'hit',tabindex:0,role:'button','aria-label':'Cạnh '+s.m+' mét'},svg);
+    const toggle=()=>{s.sel=!s.sel;click();s.vis.setAttribute('stroke',s.sel?COL.sun:COL.fence);s.vis.setAttribute('stroke-width',s.sel?12:5);s.lab.setAttribute('fill',s.sel?COL.berry:COL.ink);popEl(s.lab);showSum();};
+    s.hit.addEventListener('click',toggle);
+    s.hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
+  const car=makeCar(svg);car.put(P.x,P.y,0);
+  const showSum=()=>{const c=sides.filter(s=>s.sel).map(s=>s.m);sumT.textContent=c.length?c.join(' + '):'';};
+  talk('Đổi sang mảnh vườn <b>hình tam giác</b>. Muốn tính chu vi, con phải cộng những cạnh nào? <b>Chạm vào các cạnh</b> để chọn, rồi bấm <b>Xe chạy thử</b>.',
+       'Đổi sang mảnh vườn hình tam giác. Muốn tính chu vi, con phải cộng những cạnh nào? Chạm vào các cạnh để chọn, rồi bấm xe chạy thử.');
+  const tryRun=async()=>{
+    const chosen=sides.filter(s=>s.sel);
+    if(!chosen.length){boop();talk('Con chưa chọn cạnh nào cả. Chạm vào cạnh của tam giác trước nhé!','Con chưa chọn cạnh nào cả. Chạm vào cạnh của tam giác trước nhé!');return;}
+    lockButtons(true);car.put(P.x,P.y,0);svg.querySelectorAll('.trail').forEach(l=>l.remove());
+    for(const s of sides){
+      if(!s.sel){
+        boop();s.vis.classList.add('blink');setTimeout(()=>s.vis.classList.remove('blink'),2900);
+        talk('Xe phải dừng lại vì cạnh đang nhấp nháy <b>chưa được chọn</b>. Xe đã về chỗ xuất phát chưa? Muốn đi <b>hết một vòng</b> thì còn thiếu cạnh nào?',
+             'Xe phải dừng lại vì cạnh đang nhấp nháy chưa được chọn. Xe đã về chỗ xuất phát chưa? Muốn đi hết một vòng thì còn thiếu cạnh nào?');
+        lockButtons(false);return;
+      }
+      const l=await drive(svg,car,s.a,s.b,s.m,COL.berry,{w:6});l.classList.add('trail');if(!alive())return;tone(800,.1);
+    }
+    fanfare();sumT.textContent='4 + 5 + 3 = 12 m';
+    talk('Xe đi hết một vòng rồi! <b>3 + 4 + 5 = 12 m</b>. Hình nào cũng vậy: muốn tính chu vi thì <b class="key">cộng tất cả các cạnh</b>, vì xe phải đi hết một vòng.',
+         'Xe đi hết một vòng rồi! Ba cộng bốn cộng năm bằng mười hai mét. Hình nào cũng vậy: muốn tính chu vi thì cộng tất cả các cạnh, vì xe phải đi hết một vòng.');
+    buttons([{label:'Câu đố cuối ▸',kind:'go',on:next}]);
+  };
+  buttons([{label:'Xe chạy thử ▸',kind:'go',on:tryRun}]);
+}
+
+/* ================= 6. CÂU ĐỐ ================= */
+function sQuiz(){
+  const alive=start();
+  const svg=newSvg(230);const f=field(svg,176,60,8,3,K,{veg:true,letters:true});
+  const {A,B,C,D}=f.P;
+  const car=makeCar(svg);car.put(A.x,A.y,0);
+  const q='Vườn rau dài <span class="L">8 m</span>, rộng <span class="W">3 m</span>. <b>Nửa chu vi</b> của vườn là bao nhiêu mét?';
+  const qv='Vườn rau dài tám mét, rộng ba mét. Nửa chu vi của vườn là bao nhiêu mét?';
+  talk(q,qv);
+  const answer=async v=>{
+    lockButtons(true);svg.querySelectorAll('.trail').forEach(l=>l.remove());car.put(A.x,A.y,0);
+    if(v===11){
+      for(const s of [[A,B,8,COL.long],[B,C,3,COL.wide]]){const l=await drive(svg,car,...s);l.classList.add('trail');if(!alive())return;}
+      fanfare();
+      talk('Chính xác! Nửa vòng là <span class="L">1 chiều dài</span> + <span class="W">1 chiều rộng</span>: 8 + 3 = <b class="key">11 m</b>.','Chính xác! Nửa vòng là một chiều dài cộng một chiều rộng. Tám cộng ba bằng mười một mét.');
+      try{localStorage.setItem('hangrao-xong','1');}catch(e){}
+      buttons([{label:'Nhận huy hiệu ▸',kind:'go',on:next}]);return;
+    }
+    if(v===22){
+      for(const s of [[A,B,8,COL.long],[B,C,3,COL.wide],[C,D,8,COL.long],[D,A,3,COL.wide]]){const l=await drive(svg,car,...s);l.classList.add('trail');if(!alive())return;}
+      boop();
+      talk('22 m là xe đã chạy <b>cả vòng</b> rồi, đó là chu vi! Câu hỏi chỉ cần <b>nửa vòng</b> thôi. Con thử lại nhé.','Hai mươi hai mét là xe đã chạy cả vòng rồi, đó là chu vi! Câu hỏi chỉ cần nửa vòng thôi. Con thử lại nhé.');
+    } else {
+      boop();
+      talk('Con vừa lấy 8 × 3 rồi. Nhưng xe chạy dọc hàng rào thì mình <b>cộng các đoạn đường</b> lại, không nhân. Con thử lại nhé.','Con vừa lấy tám nhân ba rồi. Nhưng xe chạy dọc hàng rào thì mình cộng các đoạn đường lại, không nhân. Con thử lại nhé.');
+    }
+    await wait(400);if(!alive())return;lockButtons(false);
+  };
+  buttons([{label:'22 m',on:()=>answer(22)},{label:'11 m',on:()=>answer(11)},{label:'24 m',on:()=>answer(24)}]);
+}
+
+/* ================= 7. HUY HIỆU ================= */
+function sDone(){
+  start();
+  stage.innerHTML=`<div class="done">
+    <svg viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>
+      <rect x="30" y="34" width="60" height="44" fill="${COL.grassA}" stroke="${COL.fence}" stroke-width="4"/>
+      <circle r="6" fill="${COL.berry}" stroke="${COL.ink}" stroke-width="1.5"><animateMotion dur="3s" repeatCount="indefinite" path="M30 34 H90 V78 H30 Z"/></circle>
+      <path d="M60 46 l4.5 9 10 1.5 -7 7 1.7 10 -9.2 -4.8 -9.2 4.8 1.7 -10 -7 -7 10 -1.5z" fill="#fff" stroke="${COL.ink}" stroke-width="2" stroke-linejoin="round"/>
+    </svg>
+    <h2>Huy hiệu Hàng Rào!</h2>
+    <div class="cards">
+      <div class="card"><h4>Chu vi</h4>Đi <b>hết một vòng</b> sát mép hình.<br>Cộng <b>tất cả các cạnh</b>.<br><span class="L">6</span> + <span class="W">4</span> + <span class="L">6</span> + <span class="W">4</span> = 20 m</div>
+      <div class="card"><h4>Nửa chu vi</h4>Đi <b>nửa vòng</b>: từ góc này tới góc đối diện.<br><b class="key">dài + rộng</b><br><span class="L">6</span> + <span class="W">4</span> = 10 m</div>
+    </div>
+  </div>`;
+  fanfare();
+  talk('Con đã mở khóa <b>Huy hiệu Hàng Rào</b>! Nhớ nhé: chu vi là đi hết một vòng, cộng tất cả các cạnh. Nửa chu vi là đi nửa vòng, bằng chiều dài cộng chiều rộng.',
+       'Con đã mở khóa huy hiệu Hàng Rào! Nhớ nhé: chu vi là đi hết một vòng, cộng tất cả các cạnh. Nửa chu vi là đi nửa vòng, bằng chiều dài cộng chiều rộng.');
+  buttons([{label:'Chơi lại',on:()=>go(0)},{label:'Về bản đồ',kind:'go',on:()=>go(-1)}]);
+}
+
+go(-1);
+</script>
