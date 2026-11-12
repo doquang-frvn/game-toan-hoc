@@ -13,6 +13,7 @@
   color-scheme:light;
 }
 html,body{background:var(--sky);color:var(--ink)}
+[hidden]{display:none!important}
 body{font-family:var(--body);font-weight:700;-webkit-tap-highlight-color:transparent}
 .app{max-width:920px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 28px;display:flex;flex-direction:column;gap:12px}
 .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -108,8 +109,37 @@ svg .pop,svg .blink,svg .pulse{transform-box:fill-box;transform-origin:center}
 .done h2{font-family:var(--display);font-size:clamp(28px,5vw,40px);margin:0}
 .done .nb{width:100%;max-width:760px;text-align:left}
 
+/* Luyện não */
+.hero{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 8px 0}
+.hero .hello{margin:0}
+.pillstat{font-family:var(--display);font-size:15px;border:3px solid var(--ink);border-radius:999px;background:var(--sun);padding:3px 12px;box-shadow:0 2px 0 var(--ink)}
+.drill{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:8px}
+.skill{position:relative;text-align:left;font:inherit;color:var(--ink);border:3px solid var(--ink);border-radius:16px;background:var(--paper);box-shadow:0 4px 0 var(--ink);padding:12px 14px;cursor:pointer;min-width:0}
+.skill:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink)}
+.skill h4{margin:0;font-family:var(--display);font-size:19px}
+.skill p{margin:3px 0 0;font-size:14px;color:var(--ink-soft)}
+.skill .stars{position:absolute;top:-12px;right:10px;font-size:14px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:1px 8px;font-family:var(--display);color:var(--long)}
+.skill.mix{grid-column:1/-1;background:#fff3c4}
+.qbig{font-family:var(--display);font-size:clamp(44px,10vw,76px);text-align:center;margin:20px 0 8px;letter-spacing:.03em}
+.qmeta{display:flex;justify-content:center;align-items:center;gap:16px;padding:12px 0 16px;font-family:var(--display);font-size:17px}
+.qdots{display:flex;gap:7px}
+.qdots i{width:14px;height:14px;border-radius:50%;background:#d6e2ec;border:2px solid var(--ink)}
+.qdots i.ok{background:var(--leaf)}
+.qdots i.bad{background:var(--berry)}
+.streak{color:var(--long)}
+/* Tủ huy chương */
+.trophy{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:8px;align-items:start}
+.medal{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;font-family:var(--display);text-align:center;color:var(--ink)}
+.medal svg{width:72px;height:72px}
+.medal.off{opacity:.35;filter:grayscale(1)}
+.cup{grid-column:1/-1;display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:16px;background:var(--paper);padding:10px 14px}
+.cup svg{width:84px;height:84px;flex:none}
+.cup b{font-family:var(--display);font-size:20px}
+.cup p{margin:2px 0 0;font-size:15px;color:var(--ink-soft)}
+
 @media (max-width:560px){
-  .map,.means,.nb,.chips{grid-template-columns:1fr}
+  .map,.means,.nb,.chips,.drill{grid-template-columns:1fr}
+  .trophy{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stage{padding:4px}
   .board{margin:4px;padding:10px 12px}
 }
@@ -219,9 +249,11 @@ function go(w,i=0){
     $('#title').innerHTML=`${W.title}<small>${W.sub}</small>`;
     $('#dots').innerHTML=W.screens.map((_,k)=>`<i class="${k<i?'on':k===i?'now':''}"></i>`).join('');
   } else if(w==='note') $('#title').innerHTML='Sổ Công Thức<small>Chạm vào một công thức để nghe đọc</small>';
+  else if(w==='trophy') $('#title').innerHTML='Tủ Huy Chương<small>Thành tích và phần thưởng của con</small>';
   else $('#title').innerHTML='Hộp Đồ Chơi Toán<small>Toán lớp 3 bằng hình và chuyển động</small>';
+  if(w==='drill')$('#dots').hidden=true;
   window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
-  if(W)W.screens[i]();else if(w==='note')sNotebook();else sHome();
+  if(W)W.screens[i]();else if(w==='note')sNotebook();else if(w==='trophy')sTrophy();else sHome();
   if(!reduce&&stage.animate){stage.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.2,.8,.3,1)'});}
 }
 const next=()=>go(S.w,S.i+1);
@@ -360,9 +392,20 @@ function sHome(){
       <svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="47" rx="22" ry="9" fill="#fff" stroke="${COL.ink}" stroke-width="3"/><circle cx="24" cy="41" r="5" fill="${COL.berry}" stroke="${COL.ink}" stroke-width="2"/><circle cx="38" cy="41" r="5" fill="${COL.wide}" stroke="${COL.ink}" stroke-width="2"/><circle cx="31" cy="16" r="5" fill="${COL.leaf}" stroke="${COL.ink}" stroke-width="2"/><path d="M31 23 V32" stroke="${COL.soft}" stroke-width="2.5" stroke-dasharray="3 3"/></svg>
       <div><h3>Chia Kẹo</h3><p>Chia hết và chia có dư</p></div>
     </button>
-    <div class="tile lock"><span class="tag">Sắp mở</span>
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="16" width="40" height="10" rx="3" fill="#9aa9b6"/><rect x="8" y="36" width="24" height="10" rx="3" fill="#c3ced8"/></svg>
-      <div><h3>Thời Gian</h3><p>Bài toán tuổi</p></div></div>
+    <button class="tile ${isDone(WORLDS.time.key)?'done':''}" id="w7">
+      <span class="tag">${isDone(WORLDS.time.key)?'Đã xong ★':'Mở rồi'}</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="16" width="44" height="10" rx="3" fill="${COL.long}" stroke="${COL.ink}" stroke-width="2.5"/><rect x="8" y="36" width="30" height="10" rx="3" fill="${COL.wide}" stroke="${COL.ink}" stroke-width="2.5"/><path d="M40 41 H54 M52 20 V41" stroke="${COL.berry}" stroke-width="2.5" stroke-dasharray="3 3" fill="none"/></svg>
+      <div><h3>Thời Gian</h3><p>Bài toán tuổi, hiệu không đổi</p></div></button>
+    <button class="tile" id="w8" style="background:#e9f6e4">
+      <span class="tag" style="background:${COL.leaf};color:#fff">★ ${totalStars()}/21</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8 a18 18 0 0 1 18 18 c0 8 -5 12 -5 18 h-26 c0 -6 -5 -10 -5 -18 a18 18 0 0 1 18 -18Z" fill="#ffd1dc" stroke="${COL.ink}" stroke-width="3"/><path d="M26 44 h12 v6 a6 6 0 0 1 -12 0Z" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="3"/><path d="M24 26 q8 -10 16 0 M24 26 q8 10 16 0" fill="none" stroke="${COL.berry}" stroke-width="3" stroke-linecap="round"/></svg>
+      <div><h3>Phòng Luyện Não</h3><p>Các chiêu tính nhanh + − × : để luyện mỗi ngày</p></div>
+    </button>
+    <button class="tile" id="tr" style="background:#fdf3d9">
+      <span class="tag">${doneCount()}/7 huy hiệu</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 12 h24 v12 a12 12 0 0 1 -24 0Z" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="3"/><path d="M20 16 h-8 a8 8 0 0 0 8 10 M44 16 h8 a8 8 0 0 1 -8 10" fill="none" stroke="${COL.ink}" stroke-width="3"/><path d="M28 36 h8 v8 h-8Z M22 44 h20 v8 H22Z" fill="#eab54e" stroke="${COL.ink}" stroke-width="3"/></svg>
+      <div><h3>Tủ Huy Chương</h3><p>Huy hiệu, sao và phần thưởng của con</p></div>
+    </button>
     <button class="tile note" id="nb">
       <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="12" width="52" height="40" rx="3" fill="#2d5c4f" stroke="${COL.frame||'#9a6a3e'}" stroke-width="5"/><path d="M14 26h20M14 36h30" stroke="#f4f7f2" stroke-width="3" stroke-linecap="round"/></svg>
       <div><h3>Sổ Công Thức</h3><p>Mọi công thức con đã học, chạm để nghe đọc lại</p></div>
@@ -374,6 +417,9 @@ function sHome(){
   $('#w4').onclick=()=>go('expr');
   $('#w5').onclick=()=>go('gap');
   $('#w6').onclick=()=>go('chia');
+  $('#w7').onclick=()=>go('time');
+  $('#w8').onclick=()=>go('drill');
+  $('#tr').onclick=()=>go('trophy');
   $('#nb').onclick=()=>go('note');
   cap.innerHTML='Mỗi thế giới là một hộp đồ chơi. Con kéo, bấm, cho xe chạy để <b class="key">tự nhìn ra</b> ý nghĩa của từ toán học, rồi viết thành <b>công thức</b>.';
   lastSay='Chọn một thế giới để chơi nhé.';
@@ -409,6 +455,17 @@ const NOTES={
   chia:[
     ['Chia hết','12 : 3 = 4','chia đều, không thừa viên nào','Mười hai chia ba bằng bốn. Chia đều cho ba bạn, không thừa viên nào, gọi là chia hết.'],
     ['Chia có dư','14 : 3 = 4 (dư 2)','số dư luôn bé hơn số chia','Mười bốn chia ba bằng bốn, dư hai. Số dư luôn bé hơn số chia, vì nếu còn đủ thì chia tiếp được.']
+  ],
+  time:[
+    ['Hiệu số tuổi','không bao giờ thay đổi','chị hơn em 3 → mãi mãi hơn 3','Hai chị em cùng lớn lên, mỗi năm ai cũng thêm đúng một tuổi, nên hiệu số tuổi không bao giờ thay đổi.'],
+    ['Tìm tuổi người kia','tuổi em + hiệu','em 10, chị hơn 3 → chị 13','Muốn tìm tuổi chị, ta lấy tuổi em cộng với hiệu số tuổi.']
+  ],
+  drill:[
+    ['Bù 10 khi cộng','8 + 7 = 8 + 2 + 5 = 15','mượn cho tròn 10 rồi cộng nốt','Cộng qua 10: cho số lớn mượn để tròn 10, rồi cộng phần còn lại. Tám cộng bảy bằng tám cộng hai cộng năm, bằng mười lăm.'],
+    ['Trừ kiểu đếm tới','100 − 64: 64→70→100','thêm 6 rồi thêm 30 → 36','Trừ cho 100: đếm tới. Từ 64 thêm 6 là 70, thêm 30 nữa là 100. Sáu cộng ba mươi bằng ba mươi sáu.'],
+    ['Nhân 5','× 10 rồi chia 2','8 × 5 = 80 : 2 = 40','Nhân với 5: nhân với 10 rồi chia 2.'],
+    ['Nhân 9','× 10 rồi bớt 1 lần','7 × 9 = 70 − 7 = 63','Nhân với 9: nhân với 10 rồi bớt đi chính số đó một lần.'],
+    ['Nhân 4','gấp đôi 2 lần','7 × 4: 7→14→28','Nhân với 4: gấp đôi, rồi gấp đôi lần nữa.']
   ]
 };
 function noteCards(list,open){
@@ -417,7 +474,7 @@ function noteCards(list,open){
 function bindNotes(){stage.querySelectorAll('.nbcard').forEach(b=>b.onclick=()=>{if(b.dataset.say){click();popEl(b);say(b.dataset.say);}});}
 function sNotebook(){
   start();
-  const SEC=[['fence','Hàng Rào'],['circle','Hình Tròn'],['box','Khối Hộp'],['expr','Tính Nhanh'],['gap','Gấp – Phép Nhân'],['chia','Chia Kẹo']];
+  const SEC=[['fence','Hàng Rào'],['circle','Hình Tròn'],['box','Khối Hộp'],['expr','Tính Nhanh'],['gap','Gấp – Phép Nhân'],['chia','Chia Kẹo'],['time','Thời Gian'],['drill','Chiêu Luyện Não']];
   stage.innerHTML=`<div class="nb">${SEC.map(([k,name])=>`<div class="nbhead">${name}</div>${noteCards(NOTES[k],isDone(WORLDS[k].key))}`).join('')}</div>`;
   bindNotes();
   talk('Đây là sổ công thức của con. Chạm vào từng bảng để nghe đọc lại. Công thức nào còn dấu hỏi thì con chơi xong thế giới đó là mở được.');
@@ -801,7 +858,7 @@ function fDone(){
     <h2>Huy hiệu Hàng Rào!</h2>
     <div class="nb">${noteCards(NOTES.fence,true)}</div>
   </div>`;
-  bindNotes();fanfare();
+  bindNotes();celebrate();
   talk('Con đã mở khóa <b>Huy hiệu Hàng Rào</b>! Bốn công thức đã vào Sổ công thức. Chạm vào từng bảng để nghe đọc lại nhé.',
        'Con đã mở khóa huy hiệu Hàng Rào! Bốn công thức đã vào sổ công thức. Chạm vào từng bảng để nghe đọc lại nhé.');
   buttons([{label:'Chơi lại',on:()=>go('fence')},{label:'Sang Hình Tròn ▸',kind:'go',on:()=>go('circle')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
@@ -1114,7 +1171,7 @@ function cDone(){
     <h2>Huy hiệu Hình Tròn!</h2>
     <div class="nb">${noteCards(NOTES.circle,true)}</div>
   </div>`;
-  bindNotes();fanfare();
+  bindNotes();celebrate();
   talk('Con đã mở khóa <b>Huy hiệu Hình Tròn</b>! Ba công thức mới đã vào Sổ công thức. Nhớ nhé: <b>BÁN là một nửa</b>, <b>TRUNG là ở giữa</b>.',
        'Con đã mở khóa huy hiệu Hình Tròn! Ba công thức mới đã vào sổ công thức. Nhớ nhé: bán là một nửa, trung là ở giữa.');
   buttons([{label:'Chơi lại',on:()=>go('circle')},{label:'Mở Sổ công thức',kind:'go',on:()=>go('note')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
@@ -1283,7 +1340,7 @@ function xDone(){
     <h2>Huy hiệu Tính Nhanh!</h2>
     <div class="nb">${noteCards(NOTES.expr,true)}</div>
   </div>`;
-  bindNotes();fanfare();
+  bindNotes();celebrate();
   talk('Con đã mở khóa <b>Huy hiệu Tính Nhanh</b>! Nhớ hai luật: số nhảy đi đâu dấu theo đó, và cổng trừ thì lộn dấu bên trong.',
        'Con đã mở khóa huy hiệu Tính Nhanh! Nhớ hai luật: số nhảy đi đâu dấu theo đó, và cổng trừ thì lộn dấu bên trong.');
   buttons([{label:'Chơi lại',on:()=>go('expr')},{label:'Về bản đồ',kind:'go',on:()=>go(null)}]);
@@ -1460,7 +1517,7 @@ function bDone(){
     <h2>Huy hiệu Khối Hộp!</h2>
     <div class="nb">${noteCards(NOTES.box,true)}</div>
   </div>`;
-  bindNotes();fanfare();
+  bindNotes();celebrate();
   talk('Con đã mở khóa <b>Huy hiệu Khối Hộp</b>! Nhớ nhé: 6 mặt, 8 đỉnh, 12 cạnh — và lập phương là cái hộp có dài, rộng, cao bằng nhau.',
        'Con đã mở khóa huy hiệu Khối Hộp! Nhớ nhé: 6 mặt, 8 đỉnh, 12 cạnh — và lập phương là cái hộp có dài, rộng, cao bằng nhau.');
   buttons([{label:'Chơi lại',on:()=>go('box')},{label:'Về bản đồ',kind:'go',on:()=>go(null)}]);
@@ -1614,7 +1671,7 @@ function gDone(){
     <h2>Huy hiệu Gấp!</h2>
     <div class="nb">${noteCards(NOTES.gap,true)}</div>
   </div>`;
-  bindNotes();fanfare();
+  bindNotes();celebrate();
   talk('Con đã mở khóa <b>Huy hiệu Gấp</b>! Nhớ nhé: gấp mấy lần thì nhân mấy, còn nhiều hơn mấy thì cộng mấy.',
        'Con đã mở khóa huy hiệu Gấp! Nhớ nhé: gấp mấy lần thì nhân mấy, còn nhiều hơn mấy thì cộng mấy.');
   buttons([{label:'Chơi lại',on:()=>go('gap')},{label:'Sang Chia Kẹo ▸',kind:'go',on:()=>go('chia')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
@@ -1728,12 +1785,365 @@ function dDone(){
     <h2>Huy hiệu Chia Kẹo!</h2>
     <div class="nb">${noteCards(NOTES.chia,true)}</div>
   </div>`;
-  bindNotes();fanfare();
+  bindNotes();celebrate();
   talk('Con đã mở khóa <b>Huy hiệu Chia Kẹo</b>! Nhớ nhé: chia hết là túi hết sạch, còn thừa thì gọi là số dư — và số dư luôn bé hơn số chia.',
        'Con đã mở khóa huy hiệu Chia Kẹo! Nhớ nhé: chia hết là túi hết sạch, còn thừa thì gọi là số dư — và số dư luôn bé hơn số chia.');
   buttons([{label:'Chơi lại',on:()=>go('chia')},{label:'Mở Sổ công thức',kind:'go',on:()=>go('note')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
 }
 WORLDS.chia.screens=[shareScreen(12,false),shareScreen(14,true),dQuiz,dDone];
+
+/* ================================================================
+   PHÁO GIẤY & PHẦN THƯỞNG
+   ================================================================ */
+function confetti(n=90){
+  if(reduce)return;
+  const host=document.createElement('div');
+  host.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden';
+  document.body.appendChild(host);
+  const cols=['#e8475f','#2f7fd8','#ffd23f','#4f9a45','#f08a24','#9b59b6'];
+  for(let i=0;i<n;i++){
+    const d=document.createElement('i');const s=6+Math.random()*9;
+    d.style.cssText=`position:absolute;top:-24px;left:${Math.random()*100}%;width:${s}px;height:${s*.62}px;background:${cols[i%6]};border-radius:2px;display:block`;
+    host.appendChild(d);
+    if(d.animate)d.animate(
+      [{transform:'translateY(0) rotate(0deg)',opacity:1},{transform:`translateY(${innerHeight+60}px) rotate(${420+Math.random()*720}deg)`,opacity:.9}],
+      {duration:2300+Math.random()*1900,delay:Math.random()*600,easing:'cubic-bezier(.25,.6,.4,1)',fill:'forwards'});
+  }
+  setTimeout(()=>host.remove(),5400);
+}
+function celebrate(){fanfare();confetti();}
+const BADGE_KEYS=['fence','circle','box','expr','gap','chia','time'];
+function doneCount(){return BADGE_KEYS.filter(k=>isDone(WORLDS[k].key)).length;}
+const starsOf=id=>{try{return Math.min(3,+localStorage.getItem('sao-'+id)||0);}catch(e){return 0;}};
+const addStar=id=>{try{localStorage.setItem('sao-'+id,String(Math.min(3,starsOf(id)+1)));}catch(e){}};
+function totalStars(){return DRILLS.reduce((s,d)=>s+starsOf(d.id),0);}
+
+/* ================================================================
+   THẾ GIỚI THỜI GIAN — bài toán tuổi
+   ================================================================ */
+WORLDS.time={title:'Thế Giới Thời Gian',sub:'Bài toán tuổi: hiệu không bao giờ đổi',key:'thoigian-xong',screens:[]};
+
+function ageScene(svg,names,base,colors){
+  const u=15,x0=128,rows=[86,164];
+  const yearT=txt(svg,280,34,'',{'font-size':22,fill:COL.berry});
+  const els={bars:[],nums:[],gapG:el('g',{},svg)};
+  names.forEach((nm,r)=>{
+    txt(svg,x0-14,rows[r]+7,nm,{'font-size':19,'text-anchor':'end',fill:colors[r]});
+    els.bars.push(el('g',{},svg));
+    els.nums.push(txt(svg,0,rows[r]+7,'',{'font-size':21,'text-anchor':'start',fill:colors[r]}));
+  });
+  return {draw(t){
+    yearT.textContent=t===0?'NĂM NAY':(t>0?`SAU ${t} NĂM`:`${-t} NĂM TRƯỚC`);
+    const ages=base.map(b=>b+t);
+    names.forEach((nm,r)=>{
+      const g=els.bars[r];g.innerHTML='';
+      for(let i=0;i<ages[r];i++){
+        const old=i<base[r]+Math.min(0,t)||t>=0&&i<base[r];
+        el('rect',{x:x0+i*u,y:rows[r]-12,width:u-2,height:24,rx:4,fill:i<Math.min(...ages)?colors[r]:COL.sun,stroke:COL.ink,'stroke-width':1.6},g);
+      }
+      els.nums[r].setAttribute('x',x0+ages[r]*u+10);
+      els.nums[r].textContent=ages[r]+' tuổi';
+    });
+    const gg=els.gapG;gg.innerHTML='';
+    const a=x0+Math.min(...ages)*u,b=x0+Math.max(...ages)*u;
+    el('line',{x1:a,y1:60,x2:a,y2:190,stroke:COL.berry,'stroke-width':2,'stroke-dasharray':'5 5'},gg);
+    el('line',{x1:b,y1:60,x2:b,y2:190,stroke:COL.berry,'stroke-width':2,'stroke-dasharray':'5 5'},gg);
+    el('path',{d:`M${a} 206 V214 H${b} V206`,fill:'none',stroke:COL.berry,'stroke-width':3},gg);
+    txt(gg,(a+b)/2,236,`hơn ${Math.abs(base[0]-base[1])} tuổi`,{'font-size':17,fill:COL.berry});
+    return ages;
+  }};
+}
+
+function tSlider(){
+  start();
+  const svg=newSvg(250);
+  const sc=ageScene(svg,['Chị','Em'],[9,6],[COL.long,COL.wide]);
+  let t=0,sawPast=false,sawFuture=false,unlocked=false;
+  sc.draw(0);
+  talk('Chị 9 tuổi, em 6 tuổi — mỗi ô vàng cam là một tuổi. Chị hơn em <b>3 tuổi</b>. Con bấm cho <b>thời gian chạy tới, chạy lui</b>, và để mắt tới cái ngoặc đỏ <b>“hơn 3 tuổi”</b> xem nó có đổi không nhé!',
+       'Chị 9 tuổi, em 6 tuổi — mỗi ô là một tuổi. Chị hơn em 3 tuổi. Con bấm cho thời gian chạy tới, chạy lui, và để mắt tới cái ngoặc đỏ hơn 3 tuổi, xem nó có đổi không nhé!');
+  const move=d=>{
+    t=Math.max(-5,Math.min(10,t+d));click();
+    const ages=sc.draw(t);
+    if(t<=-3)sawPast=true;if(t>=3)sawFuture=true;
+    cap.innerHTML=`${t===0?'Năm nay':(t>0?`Sau ${t} năm`:`${-t} năm trước`)}: chị <span class="L">${ages[0]} tuổi</span>, em <span class="W">${ages[1]} tuổi</span>. Chị vẫn hơn em đúng <b class="key">3 tuổi</b>!`;
+    if(sawPast&&sawFuture&&!unlocked){
+      unlocked=true;ting();
+      const bd=board();
+      bd.add('Mỗi năm: chị +1 tuổi, em +1 tuổi');
+      bd.add('→ <span class="key">HIỆU SỐ TUỔI KHÔNG BAO GIỜ ĐỔI</span>');
+      bd.memo('Hai người cùng lớn lên, mỗi năm ai cũng thêm đúng 1 tuổi, nên hiệu số tuổi không bao giờ thay đổi. Đây là chìa khóa của mọi bài toán tuổi!');
+      talk('Con phát hiện ra <b>bí mật lớn nhất của bài toán tuổi</b> rồi: thời gian chạy đi đâu, chị vẫn hơn em <b class="key">đúng 3 tuổi</b>. Vì mỗi năm, cả hai <b>cùng thêm 1 tuổi</b> mà!',
+           'Con phát hiện ra bí mật lớn nhất của bài toán tuổi rồi: thời gian chạy đi đâu, chị vẫn hơn em đúng 3 tuổi. Vì mỗi năm, cả hai cùng thêm 1 tuổi mà!');
+      buttons([{label:'◀ Lùi 1 năm',on:()=>move(-1)},{label:'Tiến 1 năm ▶',on:()=>move(1)},{label:'Dùng bí mật này ▸',kind:'go',on:next}]);
+    }
+  };
+  buttons([{label:'◀ Lùi 1 năm',on:()=>move(-1)},{label:'Tiến 1 năm ▶',on:()=>move(1)}]);
+}
+
+function tSolve(){
+  start();
+  const svg=newSvg(250);
+  const sc=ageScene(svg,['Chị','Em'],[9,6],[COL.long,COL.wide]);
+  let t=0,solvedT=false;
+  sc.draw(0);
+  talk('Bài toán: <b>“Khi em 10 tuổi thì chị bao nhiêu tuổi?”</b> Đừng tính vội! Con cứ <b>cho thời gian chạy</b> đến lúc em tròn 10 tuổi xem sao.',
+       'Bài toán: khi em 10 tuổi thì chị bao nhiêu tuổi? Đừng tính vội! Con cứ cho thời gian chạy đến lúc em tròn 10 tuổi xem sao.');
+  const move=d=>{
+    t=Math.max(-5,Math.min(10,t+d));click();
+    const ages=sc.draw(t);
+    if(ages[1]===10&&!solvedT){
+      solvedT=true;celebrate();
+      const bd=board();
+      bd.add('Em 10 tuổi, chị vẫn hơn 3 tuổi');
+      bd.add('Tuổi chị = 10 + 3 = <span class="key">13 tuổi</span>');
+      bd.memo('Muốn tìm tuổi chị, lấy tuổi em cộng với hiệu số tuổi: tuổi chị = tuổi em + hiệu.');
+      talk('Em tròn 10! Và chị đúng <b class="key">13 tuổi</b> — vì hiệu 3 tuổi không đổi: <b>10 + 3 = 13</b>. Không cần biết bây giờ là năm nào, chỉ cần nhớ cái hiệu!',
+           'Em tròn 10! Và chị đúng 13 tuổi — vì hiệu 3 tuổi không đổi: 10 cộng 3 bằng 13. Không cần biết bây giờ là năm nào, chỉ cần nhớ cái hiệu!');
+      buttons([{label:'Câu đố ▸',kind:'go',on:next}]);
+    } else if(!solvedT){
+      cap.innerHTML=`Em đang <span class="W">${ages[1]} tuổi</span>… ${ages[1]<10?'chưa tới 10, chạy tiếp!':'quá 10 rồi, lùi lại chút!'}`;
+    }
+  };
+  buttons([{label:'◀ Lùi 1 năm',on:()=>move(-1)},{label:'Tiến 1 năm ▶',on:()=>move(1)}]);
+}
+
+function ageDraw(b1,b2,n1,n2){return svg=>{const sc=ageScene(svg,[n1,n2],[b1,b2],[COL.long,COL.wide]);sc.draw(0);return{};};}
+function tQuiz(){
+  quizScreen([
+    {draw:ageDraw(12,5,'Chị Na','Bon'),h:250,q:'Chị Na 12 tuổi, Bon 5 tuổi. Hỏi <b>10 năm nữa</b> chị Na hơn Bon bao nhiêu tuổi?',qv:'Câu một. Chị Na 12 tuổi, Bon 5 tuổi. Hỏi 10 năm nữa chị Na hơn Bon bao nhiêu tuổi?',
+     board:['Hiệu: 12 − 5 = 7 tuổi','10 năm nữa: cả hai cùng +10 → vẫn hơn <span class="key">7 tuổi</span>'],
+     opts:[
+      {label:'17 tuổi',fb:'Con cộng 10 vào hiệu rồi! Nhưng <b>cả hai cùng</b> thêm 10 tuổi, nên khoảng cách <b>không đổi</b>.',fbv:'Con cộng 10 vào hiệu rồi! Nhưng cả hai cùng thêm 10 tuổi, nên khoảng cách không đổi.'},
+      {label:'Vẫn 7 tuổi',ok:true,fb:'Chuẩn! Chị thêm 10, Bon cũng thêm 10 — hiệu số tuổi <b class="key">không bao giờ đổi</b>: vẫn là 7.',fbv:'Chuẩn! Chị thêm 10, Bon cũng thêm 10 — hiệu số tuổi không bao giờ đổi: vẫn là 7.'},
+      {label:'3 tuổi',fb:'Khoảng cách không co lại được đâu — Bon lớn thì chị <b>cũng lớn theo</b> mà!',fbv:'Khoảng cách không co lại được đâu — Bon lớn thì chị cũng lớn theo mà!'}]},
+    {draw:ageDraw(10,6,'Chị','Em'),h:250,q:'Chị hơn em <b>4 tuổi</b>. Khi em <b>9 tuổi</b> thì chị bao nhiêu tuổi?',qv:'Câu hai. Chị hơn em 4 tuổi. Khi em 9 tuổi thì chị bao nhiêu tuổi?',
+     board:['Tuổi chị = tuổi em + hiệu','= 9 + 4 = <span class="key">13 tuổi</span>'],
+     opts:[
+      {label:'13 tuổi',ok:true,fb:'Đúng rồi! Tuổi chị = tuổi em + hiệu = 9 + 4 = <b class="key">13</b>.',fbv:'Đúng rồi! Tuổi chị bằng tuổi em cộng hiệu: 9 cộng 4 bằng 13.'},
+      {label:'5 tuổi',fb:'Con lấy 9 − 4 rồi — thế thì chị <b>bé hơn</b> em mất! Chị <b>hơn</b> em nên phải <b>cộng</b>.',fbv:'Con lấy 9 trừ 4 rồi — thế thì chị bé hơn em mất! Chị hơn em nên phải cộng.'},
+      {label:'36 tuổi',fb:'9 × 4 = 36 là phép nhân rồi! “Hơn 4 tuổi” là <b>cộng 4</b> thôi.',fbv:'9 nhân 4 bằng 36 là phép nhân rồi! Hơn 4 tuổi là cộng 4 thôi.'}]},
+    {draw:ageDraw(13,5,'Anh','Bon'),h:250,q:'Anh 13 tuổi, Bon 5 tuổi. Khi Bon <b>10 tuổi</b> thì anh bao nhiêu tuổi?',qv:'Câu ba. Anh 13 tuổi, Bon 5 tuổi. Khi Bon 10 tuổi thì anh bao nhiêu tuổi?',
+     board:['Bước 1 — tìm hiệu: 13 − 5 = 8 tuổi (không đổi)','Bước 2 — Bon 10 thì anh = 10 + 8 = <span class="key">18 tuổi</span>'],
+     opts:[
+      {label:'23 tuổi',fb:'Hơi nhiều! Bon mới lớn thêm <b>5 năm</b> (5→10) thì anh cũng chỉ thêm 5: 13 + 5 = 18.',fbv:'Hơi nhiều! Bon mới lớn thêm 5 năm thì anh cũng chỉ thêm 5: 13 cộng 5 bằng 18.'},
+      {label:'18 tuổi',ok:true,fb:'Giỏi quá! Bước 1: tìm hiệu 13 − 5 = 8. Bước 2: Bon 10 thì anh = 10 + 8 = <b class="key">18</b>.',fbv:'Giỏi quá! Bước một: tìm hiệu, 13 trừ 5 bằng 8. Bước hai: Bon 10 thì anh bằng 10 cộng 8 bằng 18.'},
+      {label:'13 tuổi',fb:'Anh không trẻ mãi được đâu! Bon thêm 5 tuổi thì anh <b>cũng thêm 5 tuổi</b>.',fbv:'Anh không trẻ mãi được đâu! Bon thêm 5 tuổi thì anh cũng thêm 5 tuổi.'}]}
+  ],()=>{setDone(WORLDS.time.key);next();});
+}
+function tDone(){
+  start();
+  stage.innerHTML=`<div class="done">
+    <svg viewBox="0 0 120 120" width="130" height="130" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>
+      <rect x="28" y="44" width="56" height="10" rx="3" fill="${COL.long}" stroke="${COL.ink}" stroke-width="2.5"/>
+      <rect x="28" y="64" width="38" height="10" rx="3" fill="${COL.wide}" stroke="${COL.ink}" stroke-width="2.5"/>
+      <path d="M68 69 H86 M84 48 V69" stroke="${COL.berry}" stroke-width="3" stroke-dasharray="4 3" fill="none"/>
+    </svg>
+    <h2>Huy hiệu Thời Gian!</h2>
+    <div class="nb">${noteCards(NOTES.time,true)}</div>
+  </div>`;
+  bindNotes();celebrate();
+  talk('Con đã mở khóa <b>Huy hiệu Thời Gian</b> — đủ cả 7 huy hiệu chưa nhỉ? Vào Tủ Huy Chương xem nào! Nhớ bí mật: hiệu số tuổi không bao giờ đổi.',
+       'Con đã mở khóa huy hiệu Thời Gian! Nhớ bí mật: hiệu số tuổi không bao giờ đổi.');
+  buttons([{label:'Chơi lại',on:()=>go('time')},{label:'Mở Tủ Huy Chương ▸',kind:'go',on:()=>go('trophy')},{label:'Về bản đồ',kind:'ghost',on:()=>go(null)}]);
+}
+WORLDS.time.screens=[tSlider,tSolve,tQuiz,tDone];
+
+/* ================================================================
+   PHÒNG LUYỆN NÃO — chiêu tính nhanh + luyện đề sinh tự động
+   ================================================================ */
+WORLDS.drill={title:'Phòng Luyện Não',sub:'Chiêu tính nhanh + − × :',key:'luyennao-xong',screens:[]};
+const ri=n=>Math.floor(Math.random()*n);
+const DRILLS=[
+  {id:'bu10',name:'Bù 10 khi cộng',tip:'8 + 7: mượn 2 cho tròn 10',
+   lesson:[['Tính 8 + 7 kiểu thần tốc:','Tính 8 cộng 7 kiểu thần tốc.'],
+     ['8 + 7 = 8 + <span class="key">2</span> + 5','Tám cộng bảy bằng tám cộng hai, cộng năm.'],
+     ['= <span class="key">10</span> + 5 = 15','bằng mười cộng năm, bằng mười lăm.'],
+     ['memo:Gặp phép cộng qua 10: cho số lớn mượn vài viên để tròn 10, rồi cộng nốt phần còn lại. Số 10 cõng thêm gì cũng dễ!']],
+   gen(){const a=6+ri(4),b=5+ri(5);const m=10-a;
+     return {q:`${a} + ${b}`,ans:a+b,
+       ex:`${a} + ${b} = ${a} + <span class="key">${m}</span> + ${b-m} = 10 + ${b-m} = <b>${a+b}</b>`,
+       exv:`${a} cộng ${b}: mượn ${m} cho tròn mười, còn ${b-m}, là ${a+b}.`};}},
+  {id:'demtoi',name:'Trừ kiểu đếm tới',tip:'100 − 64: nhảy 64 → 70 → 100',
+   lesson:[['Tính 100 − 64 không cần đặt tính:','Tính 100 trừ 64 không cần đặt tính.'],
+     ['64 <span class="key">+ 6</span> → 70 <span class="key">+ 30</span> → 100','Từ 64, thêm 6 là tới 70. Thêm 30 nữa là tới 100.'],
+     ['Đã thêm: 6 + 30 = <b>36</b>. Vậy 100 − 64 = 36','Đã thêm tất cả 6 cộng 30 bằng 36. Vậy 100 trừ 64 bằng 36.'],
+     ['memo:Trừ cho 100: đừng mượn lung tung! Đếm tới: nhảy lên chục tròn gần nhất, rồi nhảy tới 100. Cộng các bước nhảy là ra.']],
+   gen(){let b=11+ri(78);if(b%10===0)b++;const s1=10-b%10,s2=100-(b+s1);
+     return {q:`100 − ${b}`,ans:100-b,
+       ex:`${b} <span class="key">+ ${s1}</span> → ${b+s1} <span class="key">+ ${s2}</span> → 100. Vậy 100 − ${b} = <b>${100-b}</b>`,
+       exv:`Từ ${b} thêm ${s1} là ${b+s1}, thêm ${s2} nữa là 100. ${s1} cộng ${s2} bằng ${100-b}.`};}},
+  {id:'nhan5',name:'Nhân 5 thần tốc',tip:'× 10 rồi chia 2',
+   lesson:[['Tính 8 × 5 kiểu thần tốc:','Tính 8 nhân 5 kiểu thần tốc.'],
+     ['8 × <span class="key">10</span> = 80 (dễ ợt, thêm số 0)','Tám nhân mười bằng 80 — dễ ợt, chỉ thêm số 0.'],
+     ['5 là <b>một nửa</b> của 10 → 80 <span class="key">: 2</span> = 40','Năm là một nửa của mười, nên lấy 80 chia 2, bằng 40.'],
+     ['memo:Nhân với 5: nhân với 10 trước (thêm số 0), rồi chia 2. Vì 5 là một nửa của 10 — “bán” là một nửa mà!']],
+   gen(){const n=4+ri(13);
+     return {q:`${n} × 5`,ans:n*5,
+       ex:`${n} × 10 = ${n*10}, chia 2 được <b>${n*5}</b>`,
+       exv:`${n} nhân 10 bằng ${n*10}, chia 2 được ${n*5}.`};}},
+  {id:'nhan9',name:'Nhân 9 thần tốc',tip:'× 10 rồi bớt 1 lần',
+   lesson:[['Tính 7 × 9 kiểu thần tốc:','Tính 7 nhân 9 kiểu thần tốc.'],
+     ['9 lần = <span class="key">10 lần − 1 lần</span>','Chín lần tức là mười lần bớt đi một lần.'],
+     ['7 × 10 = 70, bớt 7 → 70 − 7 = <b>63</b>','Bảy nhân mười bằng 70, bớt 7 còn 63.'],
+     ['memo:Nhân với 9: nhân với 10 rồi bớt đi chính số đó một lần. 9 thếp kẹo = 10 thếp bớt 1 thếp!']],
+   gen(){const n=3+ri(7);
+     return {q:`${n} × 9`,ans:n*9,
+       ex:`${n} × 10 = ${n*10}, bớt ${n} → <b>${n*9}</b>`,
+       exv:`${n} nhân 10 bằng ${n*10}, bớt ${n} còn ${n*9}.`};}},
+  {id:'nhan4',name:'Nhân 4: gấp đôi 2 lần',tip:'7 × 4: 7 → 14 → 28',
+   lesson:[['Tính 7 × 4 kiểu thần tốc:','Tính 7 nhân 4 kiểu thần tốc.'],
+     ['4 = 2 × 2 → <span class="key">gấp đôi, rồi gấp đôi nữa</span>','Bốn bằng hai nhân hai, nên chỉ cần gấp đôi, rồi gấp đôi lần nữa.'],
+     ['7 → gấp đôi → 14 → gấp đôi → <b>28</b>','Bảy gấp đôi là 14, gấp đôi nữa là 28.'],
+     ['memo:Nhân với 4: gấp đôi 2 lần. Nhân với 8 thì gấp đôi 3 lần. Gấp đôi là phép dễ nhất trong các phép nhân!']],
+   gen(){const n=3+ri(10);
+     return {q:`${n} × 4`,ans:n*4,
+       ex:`${n} → gấp đôi → ${n*2} → gấp đôi → <b>${n*4}</b>`,
+       exv:`${n} gấp đôi là ${n*2}, gấp đôi nữa là ${n*4}.`};}},
+  {id:'tronchuc',name:'Cộng trừ chục tròn',tip:'47 + 30: chỉ hàng chục nhảy',
+   lesson:[['Tính 47 + 30 kiểu thần tốc:','Tính 47 cộng 30 kiểu thần tốc.'],
+     ['30 là <b>3 chục</b> → chỉ <span class="key">hàng chục</span> thay đổi','30 là 3 chục, nên chỉ hàng chục thay đổi.'],
+     ['4 chục + 3 chục = 7 chục → 47 + 30 = <b>77</b>','4 chục cộng 3 chục bằng 7 chục. Vậy 47 cộng 30 bằng 77.'],
+     ['memo:Cộng hay trừ số tròn chục: hàng đơn vị đứng yên, chỉ hàng chục nhảy. 47+30: số 7 ngồi im, số 4 thành số 7.']],
+   gen(){const x=10*(2+ri(6))+1+ri(9);const plus=Math.random()<.5;
+     let d=10*(1+ri(5));
+     if(plus){while(x+d>99)d-=10;}else{while(x-d<10)d-=10;}
+     const ans=plus?x+d:x-d;
+     return {q:`${x} ${plus?'+':'−'} ${d}`,ans,
+       ex:`${Math.floor(x/10)} chục ${plus?'+':'−'} ${d/10} chục = ${Math.floor(ans/10)} chục → <b>${ans}</b> (số ${x%10} ngồi im)`,
+       exv:`${Math.floor(x/10)} chục ${plus?'cộng':'trừ'} ${d/10} chục bằng ${Math.floor(ans/10)} chục. Hàng đơn vị ngồi im. Bằng ${ans}.`};}},
+  {id:'mix',name:'Thử thách hỗn hợp',tip:'10 câu trộn đủ các chiêu + phép chia',mix:true,
+   lesson:[['Vòng thử thách: <b>10 câu</b> trộn tất cả các chiêu, thêm cả phép chia!','Vòng thử thách: 10 câu trộn tất cả các chiêu, thêm cả phép chia!'],
+     ['Mẹo chia: muốn tính 24 : 6, nhẩm <span class="key">6 nhân mấy bằng 24?</span>','Mẹo chia: muốn tính 24 chia 6, nhẩm: 6 nhân mấy bằng 24?'],
+     ['memo:Phép chia là phép nhân đi ngược: 24 : 6 = ? tức là 6 × ? = 24. Thuộc bảng nhân là thắng bảng chia!']],
+   gen(){
+     if(Math.random()<.3){const b=2+ri(7),q2=2+ri(8),m=b*q2;
+       return {q:`${m} : ${b}`,ans:q2,ex:`vì ${b} × <b>${q2}</b> = ${m}`,exv:`vì ${b} nhân ${q2} bằng ${m}.`};}
+     const d=DRILLS[ri(6)];return d.gen();}}
+];
+function drillHub(){
+  start();
+  stage.innerHTML=`<div class="hero"><p class="hello">Chọn một chiêu để luyện</p><span class="pillstat">★ ${totalStars()}/21</span></div>
+  <div class="drill">${DRILLS.map(d=>`<button class="skill ${d.mix?'mix':''}" data-id="${d.id}">
+    <span class="stars">${'★'.repeat(starsOf(d.id))}${'☆'.repeat(3-starsOf(d.id))}</span>
+    <h4>${d.name}</h4><p>${d.tip}</p></button>`).join('')}</div>`;
+  stage.querySelectorAll('.skill').forEach(b=>b.onclick=()=>{click();drillLesson(DRILLS.find(d=>d.id===b.dataset.id));});
+  talk('Đây là <b>Phòng Luyện Não</b>! Mỗi chiêu là một mẹo tính nhanh. Học chiêu xong thì luyện 5 câu — đúng từ 4 câu trở lên được <b class="key">1 sao</b>, mỗi chiêu tối đa 3 sao. Luyện mỗi ngày vài vòng cho não chạy vù vù!',
+       'Đây là Phòng Luyện Não! Mỗi chiêu là một mẹo tính nhanh. Học chiêu xong thì luyện 5 câu — đúng từ 4 câu trở lên được 1 sao, mỗi chiêu tối đa 3 sao. Luyện mỗi ngày vài vòng cho não chạy vù vù!');
+  buttons([{label:'← Về bản đồ',kind:'ghost',on:()=>go(null)}]);
+}
+function drillLesson(d){
+  start();
+  stage.innerHTML='';
+  const bd=board();
+  talk(`Chiêu: <b>${d.name}</b>. Nhìn lên bảng nhé!`,`Chiêu: ${d.name}. Nhìn lên bảng nhé!`);
+  let i=0;
+  const step=()=>{
+    const L=d.lesson[i];
+    if(typeof L[0]==='string'&&L[0].startsWith('memo:')){bd.memo(L[0].slice(5));say(L[0].slice(5));}
+    else{bd.add(L[0]);say(L[1]);}
+    i++;
+    if(i<d.lesson.length)buttons([{label:'Tiếp ▸',kind:'go',on:step}]);
+    else buttons([{label:`Luyện ${d.mix?10:5} câu ▸`,kind:'go',on:()=>drillRound(d)},{label:'← Chọn chiêu khác',kind:'ghost',on:()=>go('drill')}]);
+  };
+  step();
+}
+function drillRound(d){
+  const alive=start();
+  const N=d.mix?10:5;
+  let qi=0,okN=0,streak=0;
+  const show=()=>{
+    const it=d.gen();
+    const set=new Set([it.ans]);
+    while(set.size<3){const delta=(1+ri(3))*(Math.random()<.5?-1:1)*(it.ans>40?10:1);const v=it.ans+delta;if(v>0)set.add(v);}
+    const opts=[...set].sort(()=>Math.random()-.5);
+    stage.innerHTML=`<div class="qmeta"><span class="qdots">${Array.from({length:N},(_,k)=>`<i id="qd${k}" class="${k<qi?'':''}"></i>`).join('')}</span><span class="streak">chuỗi đúng: ${streak} ✦</span></div><div class="qbig">${it.q} = ?</div>`;
+    history.forEach((h,k)=>{const e=$('#qd'+k);if(e)e.className=h?'ok':'bad';});
+    cap.innerHTML=`Câu ${qi+1}/${N} · chiêu <b>${d.name}</b>`;
+    say(it.q.replace('−',' trừ ').replace('+',' cộng ').replace('×',' nhân ').replace(':',' chia ')+' bằng mấy?');
+    buttons(opts.map(v=>({label:String(v),on:async()=>{
+      lockButtons(true);
+      const right=v===it.ans;
+      history.push(right);
+      if(right){okN++;streak++;ting();if(streak>0&&streak%5===0)confetti(40);
+        cap.innerHTML=`<b style="color:var(--leaf)">Đúng!</b> ${it.ex}`;say('Đúng! '+it.exv);}
+      else{streak=0;boop();
+        cap.innerHTML=`<b style="color:var(--berry)">Chưa đúng.</b> ${it.ex}`;say('Chưa đúng. '+it.exv);}
+      const e=$('#qd'+qi);if(e)e.className=right?'ok':'bad';
+      qi++;
+      await wait(right?1500:2600);if(!alive())return;
+      qi<N?show():finish();
+    }})));
+  };
+  const history=[];
+  const finish=()=>{
+    const passed=okN>=Math.ceil(N*0.8);
+    stage.innerHTML=`<div class="done"><div class="qbig">${okN}/${N}</div><h2>${passed?'Tuyệt vời!':'Gần được rồi!'}</h2></div>`;
+    if(passed){
+      const before=starsOf(d.id);addStar(d.id);setDone(WORLDS.drill.key);
+      celebrate();
+      const now=starsOf(d.id);
+      talk(now>before?`Đúng ${okN}/${N} câu — con nhận được <b class="key">1 sao</b>! Chiêu “${d.name}” giờ có ${'★'.repeat(now)}${now>=3?' — TỐI ĐA, cao thủ thật sự!':'.'}`:`Đúng ${okN}/${N} câu! Chiêu này đã đủ 3 sao — con là cao thủ rồi, luyện chiêu khác thôi!`,
+           now>before?`Đúng ${okN} trên ${N} câu — con nhận được 1 sao!`:`Đúng ${okN} trên ${N} câu! Chiêu này đã đủ 3 sao rồi.`);
+    } else {
+      boop();
+      talk(`Đúng ${okN}/${N} câu. Cần đúng ${Math.ceil(N*0.8)} câu để lấy sao — xem lại chiêu rồi thử lại, lần này chắc chắn được!`,
+           `Đúng ${okN} trên ${N} câu. Cần đúng ${Math.ceil(N*0.8)} câu để lấy sao — xem lại chiêu rồi thử lại, lần này chắc chắn được!`);
+    }
+    buttons([{label:'Luyện vòng nữa',kind:'go',on:()=>drillRound(d)},{label:'Xem lại chiêu',kind:'ghost',on:()=>drillLesson(d)},{label:'Chọn chiêu khác',on:()=>go('drill')}]);
+  };
+  show();
+}
+WORLDS.drill.screens=[drillHub];
+
+/* ================================================================
+   TỦ HUY CHƯƠNG
+   ================================================================ */
+const MEDAL_ICONS={
+  fence:`<rect x="30" y="34" width="60" height="44" fill="${COL.grassA}" stroke="${COL.fence}" stroke-width="4"/><circle cx="40" cy="40" r="5" fill="${COL.berry}"/>`,
+  circle:`<circle cx="60" cy="56" r="26" fill="#fff" stroke="${COL.ink}" stroke-width="4"/><line x1="34" y1="56" x2="86" y2="56" stroke="${COL.berry}" stroke-width="4"/><circle cx="60" cy="56" r="4" fill="${COL.ink}"/>`,
+  box:`<path d="M40 74 h28 v-28 h-28Z" fill="#ffd97f" stroke="${COL.ink}" stroke-width="3"/><path d="M40 46 l11 -8 h28 l-11 8Z" fill="#ffeab3" stroke="${COL.ink}" stroke-width="3"/><path d="M68 74 l11 -8 v-28 l-11 8Z" fill="#eab54e" stroke="${COL.ink}" stroke-width="3"/>`,
+  expr:`<rect x="26" y="42" width="28" height="20" rx="6" fill="#fff" stroke="${COL.ink}" stroke-width="3"/><rect x="64" y="52" width="28" height="20" rx="6" fill="#fff" stroke="${COL.ink}" stroke-width="3"/><path d="M50 36 Q62 22 76 40" fill="none" stroke="${COL.berry}" stroke-width="4" stroke-linecap="round"/>`,
+  gap:`<circle cx="46" cy="70" r="6" fill="#e8475f" stroke="${COL.ink}" stroke-width="2"/><circle cx="62" cy="70" r="6" fill="#e8475f" stroke="${COL.ink}" stroke-width="2"/><circle cx="78" cy="70" r="6" fill="#e8475f" stroke="${COL.ink}" stroke-width="2"/><circle cx="46" cy="54" r="6" fill="#2f7fd8" stroke="${COL.ink}" stroke-width="2"/><circle cx="62" cy="54" r="6" fill="#2f7fd8" stroke="${COL.ink}" stroke-width="2"/><circle cx="78" cy="54" r="6" fill="#2f7fd8" stroke="${COL.ink}" stroke-width="2"/><circle cx="46" cy="38" r="6" fill="#4f9a45" stroke="${COL.ink}" stroke-width="2"/><circle cx="62" cy="38" r="6" fill="#4f9a45" stroke="${COL.ink}" stroke-width="2"/><circle cx="78" cy="38" r="6" fill="#4f9a45" stroke="${COL.ink}" stroke-width="2"/>`,
+  chia:`<ellipse cx="60" cy="66" rx="26" ry="10" fill="#fff" stroke="${COL.ink}" stroke-width="3"/><circle cx="52" cy="58" r="6" fill="#e8475f" stroke="${COL.ink}" stroke-width="2"/><circle cx="68" cy="58" r="6" fill="#2f7fd8" stroke="${COL.ink}" stroke-width="2"/><circle cx="60" cy="34" r="6" fill="#f08a24" stroke="${COL.ink}" stroke-width="2"/>`,
+  time:`<rect x="32" y="42" width="52" height="9" rx="3" fill="${COL.long}" stroke="${COL.ink}" stroke-width="2"/><rect x="32" y="60" width="36" height="9" rx="3" fill="${COL.wide}" stroke="${COL.ink}" stroke-width="2"/><path d="M70 65 H86 M84 46 V65" stroke="${COL.berry}" stroke-width="3" stroke-dasharray="3 3" fill="none"/>`
+};
+const WORLD_NAMES={fence:'Hàng Rào',circle:'Hình Tròn',box:'Khối Hộp',expr:'Tính Nhanh',gap:'Gấp',chia:'Chia Kẹo',time:'Thời Gian'};
+function sTrophy(){
+  start();
+  const n=doneCount(),stars=totalStars();
+  const lvl=n>=7?(stars>=12?3:2):(n>=4?1:0);
+  const cupCol=['#c9d4dd','#cd8d4a','#c9ccd4','#ffd23f'][lvl];
+  const cupName=['Cúp Tập Sự','Cúp Đồng','Cúp Bạc','CÚP VÀNG'][lvl];
+  const needT=['Đạt 4 huy hiệu để lên Cúp Đồng.','Đủ 7 huy hiệu để lên Cúp Bạc.','Gom 12 sao Luyện Não để lên CÚP VÀNG.','Con đã đạt cúp cao nhất! Giỏi tuyệt vời!'][lvl];
+  stage.innerHTML=`<div class="trophy">
+    <div class="cup">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <path d="M38 22 h44 v22 a22 22 0 0 1 -44 0Z" fill="${cupCol}" stroke="${COL.ink}" stroke-width="4"/>
+        <path d="M38 28 h-14 a14 14 0 0 0 14 18 M82 28 h14 a14 14 0 0 1 -14 18" fill="none" stroke="${COL.ink}" stroke-width="4"/>
+        <path d="M53 66 h14 v14 h-14Z M42 80 h36 v14 H42Z" fill="#eab54e" stroke="${COL.ink}" stroke-width="4"/>
+        <path d="M60 28 l3.4 7 7.6 1.1 -5.5 5.4 1.3 7.6 -6.8 -3.6 -6.8 3.6 1.3 -7.6 -5.5 -5.4 7.6 -1.1z" fill="#fff" stroke="${COL.ink}" stroke-width="2"/>
+      </svg>
+      <div><b>${cupName}</b><p>${n}/7 huy hiệu · ${stars}/21 sao luyện não</p><p>${needT}</p></div>
+    </div>
+    ${BADGE_KEYS.map(k=>`<div class="medal ${isDone(WORLDS[k].key)?'':'off'}">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="56" r="46" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="4"/>${MEDAL_ICONS[k]}</svg>
+      ${WORLD_NAMES[k]}</div>`).join('')}
+    <div class="medal ${stars>0?'':'off'}">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="56" r="46" fill="#ffd1dc" stroke="${COL.ink}" stroke-width="4"/><path d="M60 26 l8 17 19 2.7 -14 13.3 3.4 18.6 -16.4 -8.9 -16.4 8.9 3.4 -18.6 -14 -13.3 19 -2.7z" fill="${COL.sun}" stroke="${COL.ink}" stroke-width="3"/></svg>
+      ${stars} sao Luyện Não</div>
+  </div>`;
+  if(lvl===3){celebrate();
+    talk('<b>CÚP VÀNG!</b> Con đã gom đủ 7 huy hiệu và rất nhiều sao Luyện Não. Con xứng đáng là <b class="key">Cao Thủ Toán Lớp 3</b>! Bấm nút để bắn pháo hoa ăn mừng!',
+         'Cúp vàng! Con đã gom đủ 7 huy hiệu và rất nhiều sao Luyện Não. Con xứng đáng là Cao Thủ Toán Lớp 3! Bấm nút để bắn pháo hoa ăn mừng!');
+    buttons([{label:'Bắn pháo hoa! ✦',kind:'go',on:()=>{celebrate();setTimeout(()=>confetti(120),600);}},{label:'← Về bản đồ',kind:'ghost',on:()=>go(null)}]);
+  } else {
+    talk(`Đây là tủ huy chương của con: <b>${n}/7 huy hiệu</b> và <b>${stars} sao</b> Luyện Não. ${needT} Huy hiệu mờ là thế giới chưa chơi xong — chinh phục nốt nhé!`,
+         `Đây là tủ huy chương của con: ${n} trên 7 huy hiệu và ${stars} sao Luyện Não. ${needT}. Huy hiệu mờ là thế giới chưa chơi xong — chinh phục nốt nhé!`);
+    buttons([{label:'← Về bản đồ',kind:'ghost',on:()=>go(null)}]);
+  }
+}
 
 go(null);
 </script>
